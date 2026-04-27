@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPT生成器 - 在线预览与导出</title>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; background: #0a0e27; color: #fff; }
+
+  /* 顶部工具栏 */
+  .toolbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(135deg, rgba(20, 20, 50, 0.95), rgba(15, 15, 35, 0.95));
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .toolbar-title {
+    font-size: 18px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff, #667eea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .btn {
+    padding: 10px 24px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+  }
+  .btn-secondary {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+  }
+  .slide-counter-tool {
+    background: rgba(255,255,255,0.1);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* PPT容器 */
+  .ppt-container {
+    padding-top: 80px;
+    padding-bottom: 40px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .slide-wrapper {
+    width: 1280px;
+    height: 720px;
+    background: linear-gradient(135deg, #0a0e27, #1a1f4a);
+    border-radius: 20px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0; left: 0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 60px;
+    animation: fadeIn 0.5s ease;
+  }
+  .slide.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 导航控制 */
+  .nav-controls {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    z-index: 100;
+    background: rgba(0,0,0,0.6);
+    padding: 12px 28px;
+    border-radius: 50px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .nav-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    font-weight: 500;
+  }
+  .nav-btn:hover {
+    background: rgba(102, 126, 234, 0.4);
+    border-color: rgba(102, 126, 234, 0.5);
+  }
+
+  /* 封面样式 */
+  .slide-cover { text-align: center; }
+  .cover-logo {
+    width: 100px; height: 100px;
+    background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+    border-radius: 24px;
+    margin: 0 auto 24px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 48px;
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+  }
+  .cover-badge {
+    display: inline-block;
+    background: rgba(102, 126, 234, 0.2);
+    border: 1px solid rgba(102, 126, 234, 0.4);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #a8d8ea;
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+  }
+  .cover-title {
+    font-size: 52px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff, #667eea, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .cover-subtitle {
+    font-size: 18px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 32px;
+  }
+  .cover-tags {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .tag {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* 章节标题 */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    width: 100%;
+  }
+  .section-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+  }
+  .section-title-wrap h2 {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff, #667eea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .section-title-wrap p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+  }
+
+  /* 截图展示 */
+  .screenshot-showcase {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    flex: 1;
+    align-items: center;
+  }
+  .screenshot-main { flex: 2; }
+  .screenshot-frame {
+    background: rgba(255,255,255,0.1);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .screenshot-bar {
+    background: rgba(30, 30, 50, 0.9);
+    height: 32px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    gap: 6px;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28c840; }
+  .screenshot-img {
+    width: 100%;
+    display: block;
+    max-height: 350px;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  /* 功能特点 */
+  .features-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .feature-item {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 16px;
+  }
+  .feature-item h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .feature-item h4::before {
+    content: '';
+    width: 3px;
+    height: 14px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 2px;
+  }
+  .feature-item p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.5;
+  }
+
+  /* 数据统计 */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 6px;
+  }
+
+  /* 多截图网格 */
+  .multi-screenshot {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    width: 100%;
+  }
+  .screenshot-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .screenshot-card-header {
+    padding: 10px 14px;
+    background: rgba(102, 126, 234, 0.15);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .screenshot-card-body img {
+    width: 100%;
+    display: block;
+    height: 180px;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  /* 结尾页 */
+  .slide-end { text-align: center; }
+  .end-icon { font-size: 70px; margin-bottom: 24px; }
+  .end-title {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff, #667eea, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .end-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 40px;
+  }
+  .end-features {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .end-feat {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 16px 24px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* 导出进度 */
+  .export-progress {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(20, 20, 50, 0.95);
+    padding: 30px 50px;
+    border-radius: 20px;
+    text-align: center;
+    z-index: 2000;
+    display: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .export-progress.active { display: block; }
+  .export-icon { font-size: 48px; margin-bottom: 16px; }
+  .export-text { font-size: 16px; color: rgba(255,255,255,0.8); }
+  .progress-bar-export {
+    width: 200px;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    margin-top: 16px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+
+  /* 提示 */
+  .toast {
+    position: fixed;
+    top: 80px;
+    right: 30px;
+    background: rgba(46, 204, 113, 0.9);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 2000;
+    transform: translateX(150%);
+    transition: transform 0.3s;
+  }
+  .toast.show { transform: translateX(0); }
+</style>
+</head>
+<body>
+
+<!-- 顶部工具栏 -->
+<div class="toolbar">
+  <div class="toolbar-left">
+    <div class="toolbar-title">🎓 PPT生成器</div>
+    <div class="slide-counter-tool" id="counterTool">1 / 14</div>
+  </div>
+  <div class="toolbar-right">
+    <button class="btn btn-secondary" onclick="window.open('index.html', '_blank')">👁️ 全屏演示</button>
+    <button class="btn btn-primary" onclick="exportPPT()">📥 导出 PPT 文件</button>
+  </div>
+</div>
+
+<!-- 导出进度 -->
+<div class="export-progress" id="exportProgress">
+  <div class="export-icon">📦</div>
+  <div class="export-text">正在生成 PPT 文件...</div>
+  <div class="progress-bar-export">
+    <div class="progress-bar-inner" id="progressInner" style="width: 0%"></div>
+  </div>
+</div>
+
+<!-- 提示 -->
+<div class="toast" id="toast">✅ 导出成功！</div>
+
+<!-- PPT内容 -->
+<div class="ppt-container">
+  <div class="slide-wrapper" id="slideWrapper">
+
+    <!-- 第1页：封面 -->
+    <div class="slide slide-cover active" id="slide-1">
+      <div class="cover-badge">⭐ 企业级解决方案</div>
+      <div class="cover-logo">🎓</div>
+      <div class="cover-title">智学云平台</div>
+      <div class="cover-subtitle">数字化转型 · 智能学习 · 高效管理</div>
+      <div class="cover-tags">
+        <span class="tag">📚 智能课程体系</span>
+        <span class="tag">📝 全流程考试系统</span>
+        <span class="tag">🏆 积分成长激励</span>
+        <span class="tag">📊 实时数据分析</span>
+      </div>
+    </div>
+
+    <!-- 第2页：系统概述 -->
+    <div class="slide" id="slide-2">
+      <div class="section-header">
+        <div class="section-icon">🎯</div>
+        <div class="section-title-wrap">
+          <h2>系统概述</h2>
+          <p>一站式在线教育管理平台</p>
+        </div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-num">6+</div><div class="stat-label">核心功能模块</div></div>
+        <div class="stat-card"><div class="stat-num">22+</div><div class="stat-label">子功能页面</div></div>
+        <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">用户角色类型</div></div>
+        <div class="stat-card"><div class="stat-num">100%</div><div class="stat-label">全功能覆盖</div></div>
+      </div>
+      <div class="screenshot-showcase">
+        <div class="screenshot-main">
+          <div class="screenshot-frame">
+            <div class="screenshot-bar">
+              <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+            </div>
+            <img src="image/02-%E9%A6%96%E9%A1%B5-%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90.png" class="screenshot-img" alt="首页统计">
+          </div>
+        </div>
+        <div class="features-panel">
+          <div class="feature-item"><h4>实时数据看板</h4><p>用户总数、课程总数、学习时长等关键指标实时展示</p></div>
+          <div class="feature-item"><h4>多维度统计图表</h4><p>折线图、柱状图、饼图多种数据可视化方式</p></div>
+          <div class="feature-item"><h4>排行榜单系统</h4><p>课程学习人数TOP10、活跃用户排行、积分排行</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第3页：用户管理 -->
+    <div class="slide" id="slide-3">
+      <div class="section-header">
+        <div class="section-icon">👥</div>
+        <div class="section-title-wrap">
+          <h2>用户管理体系</h2>
+          <p>全方位用户生命周期管理</p>
+        </div>
+      </div>
+      <div class="screenshot-showcase">
+        <div class="screenshot-main">
+          <div class="screenshot-frame">
+            <div class="screenshot-bar">
+              <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+            </div>
+            <img src="image/03-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86-%E7%94%A8%E6%88%B7%E5%88%97%E8%A1%A8.png" class="screenshot-img" alt="用户列表">
+          </div>
+        </div>
+        <div class="features-panel">
+          <div class="feature-item"><h4>用户信息管理</h4><p>完整的用户档案管理，支持多维度搜索筛选</p></div>
+          <div class="feature-item"><h4>积分变动记录</h4><p>每笔积分变动详细记录，来源可追溯</p></div>
+          <div class="feature-item"><h4>等级成长体系</h4><p>多等级进阶体系，每个等级对应专属权益</p></div>
+          <div class="feature-item"><h4>角色权限控制</h4><p>7种预设角色，细粒度权限配置</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第4页：积分与等级 -->
+    <div class="slide" id="slide-4">
+      <div class="section-header">
+        <div class="section-icon">💰</div>
+        <div class="section-title-wrap">
+          <h2>积分与等级管理</h2>
+          <p>游戏化激励机制</p>
+        </div>
+      </div>
+      <div class="multi-screenshot">
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>💳</span> 积分管理系统</div>
+          <div class="screenshot-card-body"><img src="image/04-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86-%E7%A7%AF%E5%88%86%E7%AE%A1%E7%90%86.png" alt="积分管理"></div>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>🏆</span> 等级体系配置</div>
+          <div class="screenshot-card-body"><img src="image/05-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86-%E7%AD%89%E7%BA%A7%E7%AE%A1%E7%90%86.png" alt="等级管理"></div>
+        </div>
+      </div>
+      <div class="stats-grid" style="margin-top: 20px; margin-bottom: 0;">
+        <div class="stat-card"><div class="stat-num">+10</div><div class="stat-label">观看视频/次</div></div>
+        <div class="stat-card"><div class="stat-num">+100</div><div class="stat-label">完成课程</div></div>
+        <div class="stat-card"><div class="stat-num">+50</div><div class="stat-label">通过考试</div></div>
+        <div class="stat-card"><div class="stat-num">Lv1-Lv10</div><div class="stat-label">等级体系</div></div>
+      </div>
+    </div>
+
+    <!-- 第5页：角色权限 -->
+    <div class="slide" id="slide-5">
+      <div class="section-header">
+        <div class="section-icon">🔐</div>
+        <div class="section-title-wrap">
+          <h2>角色权限管理</h2>
+          <p>企业级权限管控体系</p>
+        </div>
+      </div>
+      <div class="screenshot-showcase">
+        <div class="screenshot-main">
+          <div class="screenshot-frame">
+            <div class="screenshot-bar">
+              <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+            </div>
+            <img src="image/06-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86-%E8%A7%92%E8%89%B2%E7%AE%A1%E7%90%86.png" class="screenshot-img" alt="角色管理">
+          </div>
+        </div>
+        <div class="features-panel">
+          <div class="feature-item"><h4>7种预设角色</h4><p>超级管理员、管理员、课程管理员、考试管理员等</p></div>
+          <div class="feature-item"><h4>自定义角色</h4><p>支持创建自定义角色，灵活配置权限范围</p></div>
+          <div class="feature-item"><h4>细粒度权限</h4><p>模块级、页面级、操作级多层权限控制</p></div>
+          <div class="feature-item"><h4>状态可控</h4><p>角色状态可随时启用/禁用，权限变更实时生效</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第6页：课程管理 -->
+    <div class="slide" id="slide-6">
+      <div class="section-header">
+        <div class="section-icon">📚</div>
+        <div class="section-title-wrap">
+          <h2>课程管理体系</h2>
+          <p>全流程课程生命周期管理</p>
+        </div>
+      </div>
+      <div class="multi-screenshot">
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>📋</span> 课程列表管理</div>
+          <div class="screenshot-card-body"><img src="image/07-%E8%AF%BE%E7%A8%8B%E7%AE%A1%E7%90%86-%E8%AF%BE%E7%A8%8B%E5%88%97%E8%A1%A8.png" alt="课程列表"></div>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>📂</span> 课程分类体系</div>
+          <div class="screenshot-card-body"><img src="image/08-%E8%AF%BE%E7%A8%8B%E7%AE%A1%E7%90%86-%E8%AF%BE%E7%A8%8B%E5%88%86%E7%B1%BB.png" alt="课程分类"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第7页：学习进度 -->
+    <div class="slide" id="slide-7">
+      <div class="section-header">
+        <div class="section-icon">📈</div>
+        <div class="section-title-wrap">
+          <h2>学习进度追踪</h2>
+          <p>全程数据化学习管理</p>
+        </div>
+      </div>
+      <div class="screenshot-showcase">
+        <div class="screenshot-main">
+          <div class="screenshot-frame">
+            <div class="screenshot-bar">
+              <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+            </div>
+            <img src="image/09-%E8%AF%BE%E7%A8%8B%E7%AE%A1%E7%90%86-%E5%AD%A6%E4%B9%A0%E8%BF%9B%E5%BA%A6.png" class="screenshot-img" alt="学习进度">
+          </div>
+        </div>
+        <div class="features-panel">
+          <div class="feature-item"><h4>实时进度追踪</h4><p>精确记录每位学员每个章节的学习进度</p></div>
+          <div class="feature-item"><h4>学习时长统计</h4><p>累计学习时长统计，最后观看时间记录</p></div>
+          <div class="feature-item"><h4>多维度筛选</h4><p>支持按用户、按课程、按时间段筛选</p></div>
+          <div class="feature-item"><h4>学习报告生成</h4><p>自动生成个人学习报告，展示学习成果</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第8页：考试管理 -->
+    <div class="slide" id="slide-8">
+      <div class="section-header">
+        <div class="section-icon">📝</div>
+        <div class="section-title-wrap">
+          <h2>智能考试系统</h2>
+          <p>全流程评测闭环管理</p>
+        </div>
+      </div>
+      <div class="multi-screenshot">
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>📋</span> 考试列表管理</div>
+          <div class="screenshot-card-body"><img src="image/10-%E8%80%83%E8%AF%95%E7%AE%A1%E7%90%86-%E8%80%83%E8%AF%95%E5%88%97%E8%A1%A8.png" alt="考试列表"></div>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>📊</span> 成绩管理分析</div>
+          <div class="screenshot-card-body"><img src="image/11-%E8%80%83%E8%AF%95%E7%AE%A1%E7%90%86-%E6%88%90%E7%BB%A9%E7%AE%A1%E7%90%86.png" alt="成绩管理"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第9页：题库与主观题 -->
+    <div class="slide" id="slide-9">
+      <div class="section-header">
+        <div class="section-icon">📚</div>
+        <div class="section-title-wrap">
+          <h2>题库管理与智能评分</h2>
+          <p>专业的试题库与人工阅卷系统</p>
+        </div>
+      </div>
+      <div class="multi-screenshot">
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>📚</span> 专业题库管理</div>
+          <div class="screenshot-card-body"><img src="image/13-%E9%A2%98%E5%BA%93%E7%AE%A1%E7%90%86.png" alt="题库管理"></div>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>✏️</span> 主观题人工评分</div>
+          <div class="screenshot-card-body"><img src="image/12-%E8%80%83%E8%AF%95%E7%AE%A1%E7%90%86-%E4%B8%BB%E8%A7%82%E9%A2%98%E8%AF%84%E5%88%86.png" alt="主观题评分"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第10页：积分商城 -->
+    <div class="slide" id="slide-10">
+      <div class="section-header">
+        <div class="section-icon">🛍️</div>
+        <div class="section-title-wrap">
+          <h2>积分商城体系</h2>
+          <p>游戏化激励，提升用户粘性</p>
+        </div>
+      </div>
+      <div class="multi-screenshot">
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>🏷️</span> 商品分类管理</div>
+          <div class="screenshot-card-body"><img src="image/16-%E7%A7%AF%E5%88%86%E5%95%86%E5%9F%8E-%E5%95%86%E5%93%81%E5%88%86%E7%B1%BB.png" alt="商品分类"></div>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>🎁</span> 商品列表管理</div>
+          <div class="screenshot-card-body"><img src="image/17-%E7%A7%AF%E5%88%86%E5%95%86%E5%9F%8E-%E5%95%86%E5%93%81%E5%88%97%E8%A1%A8.png" alt="商品列表"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第11页：内容运营 -->
+    <div class="slide" id="slide-11">
+      <div class="section-header">
+        <div class="section-icon">🔔</div>
+        <div class="section-title-wrap">
+          <h2>内容运营管理</h2>
+          <p>全方位内容发布与运营工具</p>
+        </div>
+      </div>
+      <div class="multi-screenshot">
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>📧</span> 通知模板管理</div>
+          <div class="screenshot-card-body"><img src="image/14-%E9%80%9A%E7%9F%A5%E7%AE%A1%E7%90%86-%E9%80%9A%E7%9F%A5%E6%A8%A1%E6%9D%BF.png" alt="通知模板"></div>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>📢</span> 系统公告管理</div>
+          <div class="screenshot-card-body"><img src="image/15-%E9%80%9A%E7%9F%A5%E7%AE%A1%E7%90%86-%E5%85%AC%E5%91%8A%E7%AE%A1%E7%90%86.png" alt="公告管理"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第12页：证书与设置 -->
+    <div class="slide" id="slide-12">
+      <div class="section-header">
+        <div class="section-icon">🏅</div>
+        <div class="section-title-wrap">
+          <h2>证书与系统设置</h2>
+          <p>专业认证与系统配置</p>
+        </div>
+      </div>
+      <div class="multi-screenshot">
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>📜</span> 证书模板配置</div>
+          <div class="screenshot-card-body"><img src="image/19-%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E8%AF%81%E4%B9%A6%E6%A8%A1%E6%9D%BF.png" alt="证书模板"></div>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>⚙️</span> 系统参数设置</div>
+          <div class="screenshot-card-body"><img src="image/20-%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%B3%BB%E7%BB%9F%E8%AE%BE%E7%BD%AE.png" alt="系统设置"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第13页：系统运维 -->
+    <div class="slide" id="slide-13">
+      <div class="section-header">
+        <div class="section-icon">🔧</div>
+        <div class="section-title-wrap">
+          <h2>系统运维管理</h2>
+          <p>企业级运维保障体系</p>
+        </div>
+      </div>
+      <div class="multi-screenshot">
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>💾</span> 数据备份与恢复</div>
+          <div class="screenshot-card-body"><img src="image/21-%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4.png" alt="系统维护"></div>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-card-header"><span>📋</span> 操作日志审计</div>
+          <div class="screenshot-card-body"><img src="image/22-%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E6%93%8D%E4%BD%9C%E6%97%A5%E5%BF%97.png" alt="操作日志"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第14页：结尾 -->
+    <div class="slide slide-end" id="slide-14">
+      <div class="end-icon">🎓</div>
+      <div class="end-title">感谢聆听</div>
+      <div class="end-sub">智学云平台 · 助力企业数字化学习转型</div>
+      <div class="end-features">
+        <div class="end-feat">👥 完善的用户体系</div>
+        <div class="end-feat">📚 灵活的课程管理</div>
+        <div class="end-feat">📝 专业的考试系统</div>
+        <div class="end-feat">🛍️ 趣味积分商城</div>
+        <div class="end-feat">⚙️ 强大的系统管理</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 导航控制 -->
+<div class="nav-controls">
+  <button class="nav-btn" onclick="prevSlide()">◀ 上一页</button>
+  <button class="nav-btn" onclick="nextSlide()">下一页 ▶</button>
+</div>
+
+<script>
+  let current = 1;
+  const total = 14;
+
+  function showSlide(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.getElementById('slide-' + n).classList.add('active');
+    document.getElementById('counterTool').textContent = n + ' / ' + total;
+  }
+
+  function nextSlide() {
+    if (current < total) { current++; showSlide(current); }
+  }
+
+  function prevSlide() {
+    if (current > 1) { current--; showSlide(current); }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') nextSlide();
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevSlide();
+  });
+
+  // 导出 PPT 功能
+  async function exportPPT() {
+    const progress = document.getElementById('exportProgress');
+    const progressInner = document.getElementById('progressInner');
+    const toast = document.getElementById('toast');
+
+    progress.classList.add('active');
+    progressInner.style.width = '10%';
+
+    try {
+      const pptx = new PptxGenJS();
+      
+      // 设置PPT属性
+      pptx.author = '智学云平台';
+      pptx.company = '在线教育系统';
+      pptx.title = '智学云平台 - 企业级在线教育解决方案';
+      pptx.layout = 'LAYOUT_16x9';
+
+      // 颜色定义
+      const colors = {
+        bg: '0A0E27',
+        primary: '667EEA',
+        secondary: '764BA2',
+        accent: 'F093FB',
+        text: 'FFFFFF',
+        textMuted: 'A8D8EA'
+      };
+
+      // ========== 第1页：封面 ==========
+      progressInner.style.width = '15%';
+      let slide = pptx.addSlide();
+      slide.background = { color: colors.bg };
+      
+      // 渐变装饰
+      slide.addShape('ellipse', { x: 8, y: -1, w: 5, h: 5, fill: { color: colors.primary, transparency: 85 } });
+      slide.addShape('ellipse', { x: -1, y: 4, w: 4, h: 4, fill: { color: colors.secondary, transparency: 85 } });
+
+      // 徽章
+      slide.addShape('rect', { x: 4.2, y: 1.2, w: 3, h: 0.5, fill: { color: colors.primary, transparency: 80 }, line: { color: colors.primary, transparency: 60 }, rounding: true });
+      slide.addText('⭐ 企业级解决方案', { x: 4.2, y: 1.2, w: 3, h: 0.5, fontSize: 12, color: colors.textMuted, align: 'center', valign: 'middle' });
+
+      // Logo
+      slide.addShape('rect', { x: 5, y: 2, w: 1.5, h: 1.5, fill: { color: colors.primary }, rounding: true });
+      slide.addText('🎓', { x: 5, y: 2, w: 1.5, h: 1.5, fontSize: 40, align: 'center', valign: 'middle' });
+
+      // 标题
+      slide.addText('智学云平台', { x: 2, y: 3.8, w: 7.5, h: 1, fontSize: 44, color: colors.text, align: 'center', bold: true });
+      slide.addText('数字化转型 · 智能学习 · 高效管理', { x: 2, y: 4.7, w: 7.5, h: 0.5, fontSize: 18, color: 'A8D8EA', align: 'center' });
+
+      // 标签
+      const tags = ['📚 智能课程体系', '📝 全流程考试系统', '🏆 积分成长激励', '📊 实时数据分析'];
+      tags.forEach((tag, i) => {
+        slide.addShape('rect', { x: 1.5 + i * 2.2, y: 5.6, w: 2, h: 0.45, fill: { color: 'FFFFFF', transparency: 92 }, line: { color: 'FFFFFF', transparency: 85 }, rounding: true });
+        slide.addText(tag, { x: 1.5 + i * 2.2, y: 5.6, w: 2, h: 0.45, fontSize: 11, color: colors.text, align: 'center', valign: 'middle' });
+      });
+
+      // ========== 第2页：系统概述 ==========
+      progressInner.style.width = '22%';
+      slide = pptx.addSlide();
+      slide.background = { color: colors.bg };
+
+      slide.addText('🎯 系统概述', { x: 0.5, y: 0.4, w: 5, h: 0.5, fontSize: 24, color: colors.text, bold: true });
+      slide.addText('一站式在线教育管理平台', { x: 0.5, y: 0.85, w: 5, h: 0.4, fontSize: 12, color: 'A8D8EA' });
+
+      // 数据卡片
+      const stats = [
+        { num: '6+', label: '核心功能模块' },
+        { num: '22+', label: '子功能页面' },
+        { num: '7', label: '用户角色类型' },
+        { num: '100%', label: '全功能覆盖' }
+      ];
+      stats.forEach((stat, i) => {
+        slide.addShape('rect', { x: 0.5 + i * 2.5, y: 1.5, w: 2.3, h: 1.2, fill: { color: 'FFFFFF', transparency: 94 }, line: { color: 'FFFFFF', transparency: 90 }, rounding: true });
+        slide.addText(stat.num, { x: 0.5 + i * 2.5, y: 1.6, w: 2.3, h: 0.6, fontSize: 28, color: colors.primary, align: 'center', bold: true });
+        slide.addText(stat.label, { x: 0.5 + i * 2.5, y: 2.2, w: 2.3, h: 0.4, fontSize: 11, color: 'A8D8EA', align: 'center' });
+      });
+
+      // 左侧功能列表
+      const features = [
+        { title: '实时数据看板', desc: '用户总数、课程总数、学习时长等关键指标实时展示' },
+        { title: '多维度统计图表', desc: '折线图、柱状图、饼图多种数据可视化方式' },
+        { title: '排行榜单系统', desc: '课程学习人数TOP10、活跃用户排行、积分排行' }
+      ];
+      features.forEach((f, i) => {
+        slide.addShape('rect', { x: 6, y: 3 + i * 0.9, w: 3.5, h: 0.8, fill: { color: 'FFFFFF', transparency: 94 }, line: { color: 'FFFFFF', transparency: 90 }, rounding: true });
+        slide.addText('▸ ' + f.title, { x: 6.2, y: 3.05 + i * 0.9, w: 3.1, h: 0.3, fontSize: 12, color: colors.text, bold: true });
+        slide.addText(f.desc, { x: 6.2, y: 3.35 + i * 0.9, w: 3.1, h: 0.4, fontSize: 10, color: 'A8D8EA' });
+      });
+
+      // 截图占位
+      slide.addShape('rect', { x: 0.5, y: 3, w: 5.2, h: 3.2, fill: { color: 'FFFFFF', transparency: 90 }, line: { color: 'FFFFFF', transparency: 80 }, rounding: true });
+      slide.addText('📊 首页数据看板截图', { x: 0.5, y: 4.3, w: 5.2, h: 0.6, fontSize: 14, color: colors.textMuted, align: 'center' });
+
+      // ========== 第3页：用户管理 ==========
+      progressInner.style.width = '30%';
+      slide = pptx.addSlide();
+      slide.background = { color: colors.bg };
+
+      slide.addText('👥 用户管理体系', { x: 0.5, y: 0.4, w: 5, h: 0.5, fontSize: 24, color: colors.text, bold: true });
+      slide.addText('全方位用户生命周期管理', { x: 0.5, y: 0.85, w: 5, h: 0.4, fontSize: 12, color: 'A8D8EA' });
+
+      // 截图
+      slide.addShape('rect', { x: 0.5, y: 1.5, w: 5.5, h: 4.8, fill: { color: 'FFFFFF', transparency: 90 }, line: { color: 'FFFFFF', transparency: 80 }, rounding: true });
+      slide.addText('👤 用户管理界面截图', { x: 0.5, y: 3.5, w: 5.5, h: 0.8, fontSize: 14, color: colors.textMuted, align: 'center' });
+
+      // 功能列表
+      const userFeatures = [
+        { title: '用户信息管理', desc: '完整的用户档案管理，支持多维度搜索筛选' },
+        { title: '积分变动记录', desc: '每笔积分变动详细记录，来源可追溯' },
+        { title: '等级成长体系', desc: '多等级进阶体系，每个等级对应专属权益' },
+        { title: '角色权限控制', desc: '7种预设角色，细粒度权限配置' }
+      ];
+      userFeatures.forEach((f, i) => {
+        slide.addShape('rect', { x: 6.3, y: 1.5 + i * 1.15, w: 3.2, h: 1, fill: { color: 'FFFFFF', transparency: 94 }, line: { color: 'FFFFFF', transparency: 90 }, rounding: true });
+        slide.addText('▸ ' + f.title, { x: 6.5, y: 1.55 + i * 1.15, w: 2.8, h: 0.35, fontSize: 12, color: colors.text, bold: true });
+        slide.addText(f.desc, { x: 6.5, y: 1.9 + i * 1.15, w: 2.8, h: 0.5, fontSize: 10, color: 'A8D8EA' });
+      });
+
+      // ========== 第4-13页：其他模块（简化版） ==========
+      const modules = [
+        { icon: '💰', title: '积分与等级管理', subtitle: '游戏化激励机制', color: colors.primary },
+        { icon: '🔐', title: '角色权限管理', subtitle: '企业级权限管控体系', color: colors.secondary },
+        { icon: '📚', title: '课程管理体系', subtitle: '全流程课程生命周期管理', color: colors.primary },
+        { icon: '📈', title: '学习进度追踪', subtitle: '全程数据化学习管理', color: colors.accent },
+        { icon: '📝', title: '智能考试系统', subtitle: '全流程评测闭环管理', color: colors.primary },
+        { icon: '📚', title: '题库管理与智能评分', subtitle: '专业的试题库与人工阅卷系统', color: colors.secondary },
+        { icon: '🛍️', title: '积分商城体系', subtitle: '游戏化激励，提升用户粘性', color: colors.accent },
+        { icon: '🔔', title: '内容运营管理', subtitle: '全方位内容发布与运营工具', color: colors.primary },
+        { icon: '🏅', title: '证书与系统设置', subtitle: '专业认证与系统配置', color: colors.secondary },
+        { icon: '🔧', title: '系统运维管理', subtitle: '企业级运维保障体系', color: colors.primary }
+      ];
+
+      for (let i = 0; i < modules.length; i++) {
+        progressInner.style.width = (35 + i * 5) + '%';
+        const m = modules[i];
+        slide = pptx.addSlide();
+        slide.background = { color: colors.bg };
+        
+        slide.addShape('rect', { x: 0.5, y: 0.5, w: 1, h: 1, fill: { color: m.color }, rounding: true });
+        slide.addText(m.icon, { x: 0.5, y: 0.5, w: 1, h: 1, fontSize: 32, align: 'center', valign: 'middle' });
+        
+        slide.addText(m.title, { x: 1.7, y: 0.55, w: 5, h: 0.5, fontSize: 24, color: colors.text, bold: true });
+        slide.addText(m.subtitle, { x: 1.7, y: 1.0, w: 5, h: 0.4, fontSize: 12, color: 'A8D8EA' });
+        
+        // 大图展示区域
+        slide.addShape('rect', { x: 0.5, y: 1.8, w: 9, h: 4.5, fill: { color: 'FFFFFF', transparency: 90 }, line: { color: 'FFFFFF', transparency: 80 }, rounding: true });
+        slide.addText(m.icon + ' ' + m.title + ' - 系统界面截图', { x: 0.5, y: 3.5, w: 9, h: 1, fontSize: 16, color: colors.textMuted, align: 'center' });
+      }
+
+      // ========== 最后一页 ==========
+      progressInner.style.width = '95%';
+      slide = pptx.addSlide();
+      slide.background = { color: colors.bg };
+
+      slide.addShape('ellipse', { x: 3.5, y: 0.5, w: 2.5, h: 2.5, fill: { color: colors.primary, transparency: 85 } });
+      slide.addText('🎓', { x: 3.5, y: 1, w: 2.5, h: 1.5, fontSize: 60, align: 'center', valign: 'middle' });
+
+      slide.addText('感谢聆听', { x: 1, y: 3.2, w: 7.5, h: 0.8, fontSize: 40, color: colors.text, align: 'center', bold: true });
+      slide.addText('智学云平台 · 助力企业数字化学习转型', { x: 1, y: 4.0, w: 7.5, h: 0.5, fontSize: 16, color: 'A8D8EA', align: 'center' });
+
+      // 核心功能
+      const endFeatures = ['👥 完善的用户体系', '📚 灵活的课程管理', '📝 专业的考试系统', '🛍️ 趣味积分商城', '⚙️ 强大的系统管理'];
+      endFeatures.forEach((f, i) => {
+        slide.addShape('rect', { x: 0.7 + i * 1.7, y: 4.8, w: 1.5, h: 0.55, fill: { color: 'FFFFFF', transparency: 94 }, line: { color: 'FFFFFF', transparency: 88 }, rounding: true });
+        slide.addText(f, { x: 0.7 + i * 1.7, y: 4.8, w: 1.5, h: 0.55, fontSize: 11, color: colors.text, align: 'center', valign: 'middle' });
+      });
+
+      // 导出
+      progressInner.style.width = '100%';
+      await pptx.writeFile({ fileName: '智学云平台-产品介绍.pptx' });
+
+      setTimeout(() => {
+        progress.classList.remove('active');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+      }, 500);
+
+    } catch (err) {
+      console.error('导出失败:', err);
+      progress.classList.remove('active');
+      alert('导出失败，请重试！');
+    }
+  }
+</script>
+</body>
+</html>

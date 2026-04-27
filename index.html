@@ -526,18 +526,6 @@
           if (aIsNumeric) return -1;
           if (bIsNumeric) return 1;
 
-          // ppt*.html 排序
-          const aIsPpt = a.startsWith('ppt');
-          const bIsPpt = b.startsWith('ppt');
-
-          if (aIsPpt && bIsPpt) {
-            const aNum = a === 'ppt.html' ? 0 : parseInt(a.replace('ppt', '').replace('.html', '')) || 999;
-            const bNum = b === 'ppt.html' ? 0 : parseInt(b.replace('ppt', '').replace('.html', '')) || 999;
-            return aNum - bNum;
-          }
-          if (aIsPpt) return -1;
-          if (bIsPpt) return 1;
-
           // 其他文件按名称排序
           return a.localeCompare(b);
         });

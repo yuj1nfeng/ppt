@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="医疗培训平台核心价值，面向医院管理层和投资方，展示系统对管理层和医务人员的双重价值，以及双端协同的完美闭环" />
+    <title>医疗培训平台 - 核心价值</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      :root {
+        --primary: #1a365d;
+        --secondary: #2c5282;
+        --accent: #ed8936;
+        --gold: #d69e2e;
+        --light: #e2e8f0;
+        --text: #2d3748;
+        --text-light: #718096;
+      }
+
+      .reveal {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        color: var(--text);
+      }
+
+      .reveal .slides {
+        text-align: left;
+        width: 100%;
+        max-width: 1100px;
+      }
+
+      .reveal .slides section {
+        width: 100%;
+        padding: 0;
+      }
+
+      .cover-slide {
+        position: relative;
+        height: 650px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .cover-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .cover-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.12;
+        filter: grayscale(30%);
+      }
+
+      .cover-content {
+        padding: 50px 60px;
+      }
+
+      .cover-title {
+        font-size: 44px;
+        font-weight: 800;
+        color: var(--primary);
+        line-height: 1.2;
+        margin-bottom: 15px;
+        letter-spacing: -1px;
+      }
+
+      .cover-subtitle {
+        font-size: 24px;
+        color: var(--accent);
+        font-weight: 300;
+        margin-bottom: 30px;
+      }
+
+      .cover-tagline {
+        font-size: 16px;
+        color: var(--text-light);
+        border-left: 4px solid var(--gold);
+        padding-left: 20px;
+      }
+
+      .slide-header {
+        margin-bottom: 25px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid var(--light);
+      }
+
+      .slide-title {
+        font-size: 30px;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 0;
+      }
+
+      .slide-subtitle {
+        font-size: 14px;
+        color: var(--text-light);
+        margin-top: 6px;
+        font-weight: 400;
+      }
+
+      .toc-item {
+        display: flex;
+        align-items: center;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--light);
+      }
+
+      .toc-number {
+        width: 42px;
+        height: 42px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 700;
+        margin-right: 20px;
+      }
+
+      .toc-text {
+        font-size: 20px;
+        font-weight: 500;
+        color: var(--text);
+      }
+
+      .value-card-wrapper {
+        display: flex;
+        gap: 25px;
+        align-items: stretch;
+        height: 420px;
+      }
+
+      .value-card {
+        flex: 1;
+        background: linear-gradient(135deg, #f7fafc, #edf2f7);
+        border-radius: 14px;
+        padding: 30px;
+        border-top: 3px solid var(--accent);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .value-icon {
+        width: 55px;
+        height: 55px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 18px;
+      }
+
+      .value-icon i {
+        font-size: 24px;
+        color: white;
+      }
+
+      .value-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 12px;
+      }
+
+      .value-desc {
+        font-size: 15px;
+        color: var(--text);
+        line-height: 1.7;
+      }
+
+      .value-screenshot {
+        flex: 1;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        height: 100%;
+      }
+
+      .value-screenshot img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .mini-program-wrapper {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+        height: 420px;
+      }
+
+      .mini-program-card {
+        flex: 1;
+        background: linear-gradient(135deg, #f7fafc, #edf2f7);
+        border-radius: 14px;
+        padding: 30px;
+        border-top: 3px solid #4299e1;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .mini-program-card .value-icon {
+        background: linear-gradient(135deg, #4299e1, #3182ce);
+      }
+
+      .phone-container {
+        flex: 0 0 220px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .phone-mockup {
+        width: 200px;
+        height: 400px;
+        background: #1a202c;
+        border-radius: 28px;
+        padding: 10px;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+        position: relative;
+      }
+
+      .phone-mockup::before {
+        content: '';
+        position: absolute;
+        top: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 5px;
+        background: #2d3748;
+        border-radius: 3px;
+      }
+
+      .phone-screen {
+        width: 100%;
+        height: 100%;
+        background: white;
+        border-radius: 22px;
+        overflow: hidden;
+      }
+
+      .phone-screen img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .phone-label {
+        text-align: center;
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--text-light);
+        font-weight: 500;
+      }
+
+      .core-value-statement {
+        text-align: center;
+        padding: 60px 30px;
+      }
+
+      .statement-text {
+        font-size: 36px;
+        font-weight: 300;
+        color: var(--primary);
+        line-height: 1.5;
+        margin-bottom: 25px;
+      }
+
+      .statement-highlight {
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      .statement-divider {
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--gold), var(--accent));
+        margin: 0 auto 25px;
+        border-radius: 2px;
+      }
+
+      .statement-tag {
+        display: inline-block;
+        padding: 8px 25px;
+        background: var(--primary);
+        color: white;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .dual-platform {
+        display: flex;
+        gap: 35px;
+        padding: 10px 0;
+      }
+
+      .platform-col {
+        flex: 1;
+        text-align: center;
+      }
+
+      .platform-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 15px;
+        padding-bottom: 12px;
+        border-bottom: 3px solid var(--light);
+      }
+
+      .platform-title.management {
+        border-color: var(--accent);
+      }
+
+      .platform-title.staff {
+        border-color: #4299e1;
+      }
+
+      .platform-features {
+        text-align: left;
+        padding: 0 15px;
+      }
+
+      .platform-feature-item {
+        padding: 8px 0;
+        font-size: 14px;
+        color: var(--text);
+        border-bottom: 1px dashed var(--light);
+      }
+
+      .platform-feature-item i {
+        color: var(--accent);
+        margin-right: 8px;
+        font-size: 12px;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .feature-item {
+        text-align: center;
+      }
+
+      .feature-item img {
+        width: 100%;
+        height: 130px;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 8px;
+      }
+
+      .feature-label {
+        font-size: 12px;
+        color: var(--text-light);
+        font-weight: 500;
+      }
+
+      .end-slide {
+        text-align: center;
+        padding: 80px 30px;
+      }
+
+      .end-title {
+        font-size: 42px;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 25px;
+      }
+
+      .end-subtitle {
+        font-size: 20px;
+        color: var(--text-light);
+        margin-bottom: 40px;
+      }
+
+      .end-contact {
+        display: inline-block;
+        padding: 16px 50px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        border-radius: 40px;
+        font-size: 18px;
+      }
+
+      .reveal .slides section {
+        opacity: 0;
+        transition: opacity 0.6s ease;
+      }
+
+      .reveal .slides section.present {
+        opacity: 1;
+      }
+
+      .reveal h1,
+      .reveal h2,
+      .reveal h3,
+      .reveal h4 {
+        text-transform: none;
+      }
+
+      .reveal .controls {
+        color: var(--primary);
+      }
+
+      .reveal .progress {
+        color: var(--accent);
+      }
+
+      .section-divider {
+        text-align: center;
+        padding: 70px 30px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 14px;
+        color: white;
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .section-divider h2 {
+        font-size: 36px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 15px;
+      }
+
+      .section-divider p {
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 300;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <div class="cover-slide">
+            <div class="cover-bg">
+              <img src="image/02-首页-统计分析.png" alt="背景" />
+            </div>
+            <div class="cover-content">
+              <div class="cover-title">医疗培训平台</div>
+              <div class="cover-subtitle">核心价值汇报</div>
+              <div class="cover-tagline">数字化培训，降本又增效 · 管理端+小程序双端覆盖</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">目录</h2>
+            <p class="slide-subtitle">CONTENTS</p>
+          </div>
+          <div class="toc-list">
+            <div class="toc-item">
+              <div class="toc-number">01</div>
+              <div class="toc-text">系统核心价值观</div>
+            </div>
+            <div class="toc-item">
+              <div class="toc-number">02</div>
+              <div class="toc-text">对医院管理层 · 管理端</div>
+            </div>
+            <div class="toc-item">
+              <div class="toc-number">03</div>
+              <div class="toc-text">对医务人员 · 小程序端</div>
+            </div>
+            <div class="toc-item">
+              <div class="toc-number">04</div>
+              <div class="toc-text">双端协同功能概览</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="core-value-statement">
+            <div class="statement-divider"></div>
+            <p class="statement-text">
+              让医疗培训<span class="statement-highlight">变得简单高效</span>，<br />
+              让医务人员学习<span class="statement-highlight">随时随地</span>
+            </p>
+            <span class="statement-tag"> <i class="fas fa-quote-left"></i>&nbsp;&nbsp;数字化培训，降本又增效 </span>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-divider">
+            <h2><i class="fas fa-building"></i> 对医院管理层</h2>
+            <p>后台管理系统 · 全流程数字化管控</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">对医院管理层</h2>
+            <p class="slide-subtitle">VALUE FOR HOSPITAL MANAGEMENT</p>
+          </div>
+          <div class="value-card-wrapper">
+            <div class="value-card">
+              <div class="value-icon">
+                <i class="fas fa-coins"></i>
+              </div>
+              <h3 class="value-title">降本增效</h3>
+              <p class="value-desc">省去纸质印刷、人工改卷、人工统计，大量节省人力物力成本。 自动化流程让培训管理效率提升80%以上。</p>
+            </div>
+            <div class="value-screenshot">
+              <img src="image/11-考试管理-成绩管理.png" alt="成绩管理" />
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">对医院管理层</h2>
+            <p class="slide-subtitle">VALUE FOR HOSPITAL MANAGEMENT</p>
+          </div>
+          <div class="value-card-wrapper">
+            <div class="value-card">
+              <div class="value-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <h3 class="value-title">过程可控</h3>
+              <p class="value-desc">谁学了谁没学，学得怎么样，全部数据清晰可见，心里有数。 实时监控学习进度，确保培训效果。</p>
+            </div>
+            <div class="value-screenshot">
+              <img src="image/09-课程管理-学习进度.png" alt="学习进度" />
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">对医院管理层</h2>
+            <p class="slide-subtitle">VALUE FOR HOSPITAL MANAGEMENT</p>
+          </div>
+          <div class="value-card-wrapper">
+            <div class="value-card">
+              <div class="value-icon">
+                <i class="fas fa-balance-scale"></i>
+              </div>
+              <h3 class="value-title">标准化</h3>
+              <p class="value-desc">培训内容统一，考试标准统一，避免因人而异。 确保全院培训质量一致性，提升整体医疗水平。</p>
+            </div>
+            <div class="value-screenshot">
+              <img src="image/10-考试管理-考试列表.png" alt="考试列表" />
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">对医院管理层</h2>
+            <p class="slide-subtitle">VALUE FOR HOSPITAL MANAGEMENT</p>
+          </div>
+          <div class="value-card-wrapper">
+            <div class="value-card">
+              <div class="value-icon">
+                <i class="fas fa-database"></i>
+              </div>
+              <h3 class="value-title">永久留存</h3>
+              <p class="value-desc">所有课程、考试记录永久保存，随时可查可追溯。 满足医疗行业合规审计要求。</p>
+            </div>
+            <div class="value-screenshot">
+              <img src="image/03-用户管理-用户列表.png" alt="用户列表" />
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">对医院管理层</h2>
+            <p class="slide-subtitle">VALUE FOR HOSPITAL MANAGEMENT</p>
+          </div>
+          <div class="value-card-wrapper">
+            <div class="value-card">
+              <div class="value-icon">
+                <i class="fas fa-calendar-check"></i>
+              </div>
+              <h3 class="value-title">灵活组织</h3>
+              <p class="value-desc">不需要集中安排时间地点，医务人员随时随地学习。 不影响正常医疗工作，大幅提升培训覆盖率。</p>
+            </div>
+            <div class="value-screenshot">
+              <img src="image/07-课程管理-课程列表.png" alt="课程列表" />
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-divider" style="background: linear-gradient(135deg, #4299e1, #3182ce)">
+            <h2><i class="fas fa-user-md"></i> 对医务人员</h2>
+            <p>微信小程序 · 移动学习随时随地</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">对医务人员 · 小程序端</h2>
+            <p class="slide-subtitle">VALUE FOR MEDICAL STAFF · MINI PROGRAM</p>
+          </div>
+          <div class="mini-program-wrapper">
+            <div class="mini-program-card">
+              <div class="value-icon">
+                <i class="fas fa-mobile-alt"></i>
+              </div>
+              <h3 class="value-title">随时随地</h3>
+              <p class="value-desc">手机在手，想学就学，不占上班集中时间。 微信小程序，无需下载安装，打开即学。 利用交接班、午休等碎片化时间完成学习。</p>
+            </div>
+            <div class="phone-container">
+              <div class="phone-mockup">
+                <div class="phone-screen">
+                  <img src="image/小程序-首页.PNG" alt="小程序首页" />
+                </div>
+              </div>
+              <div class="phone-label">小程序首页 · 课程考试一目了然</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">对医务人员 · 小程序端</h2>
+            <p class="slide-subtitle">VALUE FOR MEDICAL STAFF · MINI PROGRAM</p>
+          </div>
+          <div class="mini-program-wrapper">
+            <div class="mini-program-card">
+              <div class="value-icon">
+                <i class="fas fa-play-circle"></i>
+              </div>
+              <h3 class="value-title">自定进度</h3>
+              <p class="value-desc">可以暂停，可以回看，自己掌控学习节奏。 重点难点反复学习，直到真正掌握。 学习进度自动同步，多端无缝衔接。</p>
+            </div>
+            <div class="phone-container">
+              <div class="phone-mockup">
+                <div class="phone-screen">
+                  <img src="image/小程序-课程详情.PNG" alt="课程详情" />
+                </div>
+              </div>
+              <div class="phone-label">课程学习 · 支持暂停回播</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">对医务人员 · 小程序端</h2>
+            <p class="slide-subtitle">VALUE FOR MEDICAL STAFF · MINI PROGRAM</p>
+          </div>
+          <div class="mini-program-wrapper">
+            <div class="mini-program-card">
+              <div class="value-icon">
+                <i class="fas fa-bolt"></i>
+              </div>
+              <h3 class="value-title">即时反馈</h3>
+              <p class="value-desc">考完立刻出成绩，知道自己掌握得怎么样。 错题自动收集，针对性巩固薄弱环节。 成绩查询随时可查，历史记录一目了然。</p>
+            </div>
+            <div class="phone-container">
+              <div class="phone-mockup">
+                <div class="phone-screen">
+                  <img src="image/小程序-成绩查询.PNG" alt="成绩查询" />
+                </div>
+              </div>
+              <div class="phone-label">成绩查询 · 考完即出结果</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">对医务人员 · 小程序端</h2>
+            <p class="slide-subtitle">VALUE FOR MEDICAL STAFF · MINI PROGRAM</p>
+          </div>
+          <div class="mini-program-wrapper">
+            <div class="mini-program-card">
+              <div class="value-icon">
+                <i class="fas fa-trophy"></i>
+              </div>
+              <h3 class="value-title">激励机制</h3>
+              <p class="value-desc">积分+等级，持续激励主动学习。 学习考试获得积分，可在积分商城兑换丰富奖品。 排行榜激发学习热情，营造比学赶超氛围。</p>
+            </div>
+            <div class="phone-container">
+              <div class="phone-mockup">
+                <div class="phone-screen">
+                  <img src="image/小程序-积分商城.PNG" alt="积分商城" />
+                </div>
+              </div>
+              <div class="phone-label">积分商城 · 学习成果兑好礼</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">双端协同 · 完美闭环</h2>
+            <p class="slide-subtitle">MANAGEMENT + MINI PROGRAM SYNERGY</p>
+          </div>
+          <div class="dual-platform">
+            <div class="platform-col">
+              <h3 class="platform-title management"><i class="fas fa-desktop"></i> 管理端</h3>
+              <div class="platform-features">
+                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 课程创建与发布</div>
+                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 考试组卷与安排</div>
+                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 学习进度监控</div>
+                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 成绩统计分析</div>
+                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 积分商城管理</div>
+                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 用户权限管理</div>
+              </div>
+            </div>
+            <div class="platform-col">
+              <h3 class="platform-title staff"><i class="fas fa-mobile-alt"></i> 小程序端</h3>
+              <div class="platform-features">
+                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 在线课程学习</div>
+                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 在线参加考试</div>
+                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 错题本复习</div>
+                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 积分商城兑换</div>
+                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 积分明细查询</div>
+                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 个人学习档案</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">核心功能概览</h2>
+            <p class="slide-subtitle">CORE FEATURES OVERVIEW</p>
+          </div>
+          <div class="feature-grid">
+            <div class="feature-item">
+              <img src="image/02-首页-统计分析.png" alt="统计分析" />
+              <div class="feature-label">统计分析</div>
+            </div>
+            <div class="feature-item">
+              <img src="image/07-课程管理-课程列表.png" alt="课程管理" />
+              <div class="feature-label">课程管理</div>
+            </div>
+            <div class="feature-item">
+              <img src="image/10-考试管理-考试列表.png" alt="考试管理" />
+              <div class="feature-label">考试管理</div>
+            </div>
+            <div class="feature-item">
+              <img src="image/13-题库管理.png" alt="题库管理" />
+              <div class="feature-label">题库管理</div>
+            </div>
+            <div class="feature-item">
+              <img src="image/小程序-首页.PNG" alt="小程序" />
+              <div class="feature-label">小程序学习</div>
+            </div>
+            <div class="feature-item">
+              <img src="image/小程序-积分商城.PNG" alt="积分商城" />
+              <div class="feature-label">积分商城</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="end-slide">
+            <h2 class="end-title">感谢聆听</h2>
+            <p class="end-subtitle">期待与您的合作</p>
+            <div class="end-contact"><i class="fas fa-handshake"></i>&nbsp;&nbsp; 数字化培训，降本又增效</div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: 'c/t',
+        controls: true,
+        progress: true,
+        center: false,
+        transition: 'slide',
+        backgroundTransition: 'fade',
+        mouseWheel: true,
+        touch: true,
+        width: 1100,
+        height: 700,
+        margin: 0.08,
+      });
+    </script>
+  </body>
+</html>

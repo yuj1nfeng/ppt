@@ -398,7 +398,7 @@
             <i class="fas fa-sync-alt"></i>
             刷新页面
           </button>
-          <button class="action-btn" onclick="window.open('ppt.html', '_blank')">
+          <button class="action-btn" onclick="window.open('000.html', '_blank')">
             <i class="fas fa-external-link-alt"></i>
             新窗口打开
           </button>
@@ -434,7 +434,7 @@
           const text = await response.text();
           const titleMatch = text.match(/<title>([^<]+)<\/title>/);
           if (titleMatch && titleMatch[1]) {
-            return titleMatch[1].replace('医院培训平台 - ', '');
+            return titleMatch[1].replace('医疗培训平台 - ', '');
           }
         } catch {}
         return null;
@@ -450,7 +450,8 @@
           let title = filename.replace('.html', '');
           const titleMatch = text.match(/<title>([^<]+)<\/title>/);
           if (titleMatch && titleMatch[1]) {
-            title = titleMatch[1].replace('医院培训平台 - ', '').trim();
+            // title = titleMatch[1].replace('医疗培训平台 - ', '').trim();
+            title = titleMatch[1].trim();
           }
 
           // 只从 meta description 提取desc，没有则显示"无"

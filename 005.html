@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="医疗培训平台医护人员使用指南，详细介绍微信小程序操作流程，包括课程学习、在线考试、成绩查询、积分商城等功能的使用方法" />
+    <title>医疗培训平台 - 医护人员培训指南</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      :root {
+        --primary: #2b6cb0;
+        --secondary: #3182ce;
+        --accent: #4299e1;
+        --success: #38a169;
+        --light: #e2e8f0;
+        --text: #2d3748;
+        --text-light: #718096;
+      }
+
+      .reveal {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        color: var(--text);
+      }
+
+      .reveal .slides {
+        text-align: left;
+        width: 100%;
+        max-width: 1100px;
+      }
+
+      .reveal .slides section {
+        width: 100%;
+        padding: 0;
+      }
+
+      .cover-slide {
+        position: relative;
+        height: 650px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .cover-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        border-radius: 12px;
+        overflow: hidden;
+        background: linear-gradient(135deg, #ebf8ff, #bee3f8);
+      }
+
+      .cover-content {
+        padding: 50px 60px;
+      }
+
+      .cover-title {
+        font-size: 42px;
+        font-weight: 800;
+        color: var(--primary);
+        line-height: 1.2;
+        margin-bottom: 15px;
+        letter-spacing: -1px;
+      }
+
+      .cover-subtitle {
+        font-size: 22px;
+        color: var(--accent);
+        font-weight: 300;
+        margin-bottom: 30px;
+      }
+
+      .cover-tagline {
+        font-size: 16px;
+        color: var(--text-light);
+        border-left: 4px solid var(--success);
+        padding-left: 20px;
+      }
+
+      .slide-header {
+        margin-bottom: 25px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid var(--light);
+      }
+
+      .slide-title {
+        font-size: 30px;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 0;
+      }
+
+      .slide-subtitle {
+        font-size: 14px;
+        color: var(--text-light);
+        margin-top: 6px;
+        font-weight: 400;
+      }
+
+      .step-wrapper {
+        display: flex;
+        gap: 30px;
+        align-items: stretch;
+      }
+
+      .step-guide {
+        flex: 1;
+        padding: 20px 0;
+      }
+
+      .step-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #f7fafc;
+        border-radius: 10px;
+        border-left: 4px solid var(--accent);
+      }
+
+      .step-number {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 700;
+        margin-right: 15px;
+        flex-shrink: 0;
+      }
+
+      .step-content h4 {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--primary);
+        margin: 0 0 5px 0;
+      }
+
+      .step-content p {
+        font-size: 14px;
+        color: var(--text);
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      .phone-showcase {
+        flex: 0 0 220px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .phone-mockup {
+        width: 200px;
+        height: 400px;
+        background: #1a202c;
+        border-radius: 28px;
+        padding: 10px;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+        position: relative;
+      }
+
+      .phone-mockup::before {
+        content: '';
+        position: absolute;
+        top: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 5px;
+        background: #2d3748;
+        border-radius: 3px;
+      }
+
+      .phone-screen {
+        width: 100%;
+        height: 100%;
+        background: white;
+        border-radius: 22px;
+        overflow: hidden;
+      }
+
+      .phone-screen img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .phone-label {
+        text-align: center;
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--text-light);
+        font-weight: 500;
+      }
+
+      .feature-cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+
+      .feature-card {
+        background: linear-gradient(135deg, #f7fafc, #edf2f7);
+        border-radius: 12px;
+        padding: 25px;
+        border-top: 3px solid var(--accent);
+      }
+
+      .feature-card i {
+        font-size: 28px;
+        color: var(--primary);
+        margin-bottom: 12px;
+      }
+
+      .feature-card h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 8px;
+      }
+
+      .feature-card p {
+        font-size: 14px;
+        color: var(--text);
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      .faq-item {
+        margin-bottom: 15px;
+        border: 1px solid var(--light);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .faq-question {
+        padding: 15px 20px;
+        background: linear-gradient(135deg, #ebf8ff, #e2e8f0);
+        font-weight: 600;
+        color: var(--primary);
+        font-size: 15px;
+      }
+
+      .faq-answer {
+        padding: 15px 20px;
+        font-size: 14px;
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      .end-slide {
+        text-align: center;
+        padding: 80px 30px;
+      }
+
+      .end-title {
+        font-size: 42px;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 25px;
+      }
+
+      .end-subtitle {
+        font-size: 20px;
+        color: var(--text-light);
+        margin-bottom: 40px;
+      }
+
+      .end-qr {
+        display: inline-block;
+        padding: 20px 40px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        border-radius: 15px;
+        font-size: 16px;
+      }
+
+      .reveal .slides section {
+        opacity: 0;
+        transition: opacity 0.6s ease;
+      }
+
+      .reveal .slides section.present {
+        opacity: 1;
+      }
+
+      .reveal h1,
+      .reveal h2,
+      .reveal h3,
+      .reveal h4 {
+        text-transform: none;
+      }
+
+      .reveal .controls {
+        color: var(--primary);
+      }
+
+      .reveal .progress {
+        color: var(--accent);
+      }
+
+      .section-divider {
+        text-align: center;
+        padding: 70px 30px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 14px;
+        color: white;
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .section-divider h2 {
+        font-size: 36px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 15px;
+      }
+
+      .section-divider p {
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 300;
+      }
+
+      .quick-tips {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 20px 25px;
+        border-radius: 0 10px 10px 0;
+      }
+
+      .quick-tips h4 {
+        color: #856404;
+        font-size: 16px;
+        margin: 0 0 10px 0;
+      }
+
+      .quick-tips ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      .quick-tips li {
+        font-size: 14px;
+        color: #856404;
+        margin-bottom: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <div class="cover-slide">
+            <div class="cover-bg"></div>
+            <div class="cover-content">
+              <div class="cover-title">医护人员培训指南</div>
+              <div class="cover-subtitle">微信小程序操作手册</div>
+              <div class="cover-tagline">随时随地，想学就学 · 轻松掌握每一步</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">目录</h2>
+            <p class="slide-subtitle">CONTENTS</p>
+          </div>
+          <div class="feature-cards">
+            <div class="feature-card">
+              <i class="fas fa-sign-in-alt"></i>
+              <h3>登录与首页</h3>
+              <p>如何进入小程序、了解首页功能布局</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-play-circle"></i>
+              <h3>课程学习</h3>
+              <p>在线观看课程视频、控制学习进度</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-file-alt"></i>
+              <h3>在线考试</h3>
+              <p>参加考试、查看成绩、错题复习</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-gift"></i>
+              <h3>积分商城</h3>
+              <p>查看积分、兑换奖品、常见问题</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-divider">
+            <h2><i class="fas fa-home"></i> 登录与首页</h2>
+            <p>快速上手，一步到位</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">如何进入小程序</h2>
+            <p class="slide-subtitle">STEP BY STEP GUIDE</p>
+          </div>
+          <div class="step-wrapper">
+            <div class="step-guide">
+              <div class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                  <h4>打开微信</h4>
+                  <p>在手机上打开微信App，确保您已登录微信账号</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                  <h4>搜索小程序</h4>
+                  <p>点击微信顶部搜索栏，输入"医疗培训平台"</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                  <h4>进入小程序</h4>
+                  <p>点击搜索结果中的小程序图标即可进入</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                  <h4>添加到我的小程序</h4>
+                  <p>点击右上角"..."，选择"添加到我的小程序"，下次更方便找到</p>
+                </div>
+              </div>
+            </div>
+            <div class="phone-showcase">
+              <div class="phone-mockup">
+                <div class="phone-screen">
+                  <img src="image/小程序-首页.PNG" alt="小程序首页" />
+                </div>
+              </div>
+              <div class="phone-label">小程序首页</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">首页功能介绍</h2>
+            <p class="slide-subtitle">HOME PAGE OVERVIEW</p>
+          </div>
+          <div class="step-wrapper">
+            <div class="step-guide">
+              <div class="step-item">
+                <div class="step-number"><i class="fas fa-bullhorn"></i></div>
+                <div class="step-content">
+                  <h4>顶部轮播图</h4>
+                  <p>展示最新公告、重要通知、热门课程推荐</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number"><i class="fas fa-book"></i></div>
+                <div class="step-content">
+                  <h4>我的课程</h4>
+                  <p>查看已分配的课程，点击即可开始学习</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number"><i class="fas fa-clipboard-list"></i></div>
+                <div class="step-content">
+                  <h4>我的考试</h4>
+                  <p>查看待参加的考试，了解考试截止时间</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number"><i class="fas fa-trophy"></i></div>
+                <div class="step-content">
+                  <h4>积分与等级</h4>
+                  <p>查看当前积分和等级，激励持续学习</p>
+                </div>
+              </div>
+            </div>
+            <div class="phone-showcase">
+              <div class="phone-mockup">
+                <div class="phone-screen">
+                  <img src="image/小程序-首页.PNG" alt="小程序首页" />
+                </div>
+              </div>
+              <div class="phone-label">首页功能布局</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-divider">
+            <h2><i class="fas fa-play-circle"></i> 课程学习</h2>
+            <p>自主掌控，学无止境</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">课程学习流程</h2>
+            <p class="slide-subtitle">LEARNING PROCESS</p>
+          </div>
+          <div class="step-wrapper">
+            <div class="step-guide">
+              <div class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                  <h4>选择课程</h4>
+                  <p>在首页"我的课程"区域，点击想要学习的课程卡片</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                  <h4>播放视频</h4>
+                  <p>点击课程详情页的播放按钮开始观看视频</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                  <h4>控制播放</h4>
+                  <p>可暂停、拖动进度条、调节音量，自主掌控学习节奏</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                  <h4>自动保存进度</h4>
+                  <p>学习进度自动保存，下次打开可继续学习</p>
+                </div>
+              </div>
+            </div>
+            <div class="phone-showcase">
+              <div class="phone-mockup">
+                <div class="phone-screen">
+                  <img src="image/小程序-课程详情.PNG" alt="课程详情" />
+                </div>
+              </div>
+              <div class="phone-label">课程学习页面</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">学习小贴士</h2>
+            <p class="slide-subtitle">LEARNING TIPS</p>
+          </div>
+          <div class="quick-tips">
+            <h4><i class="fas fa-lightbulb"></i> 高效学习建议</h4>
+            <ul>
+              <li>利用交接班、午休等碎片化时间学习，每次10-15分钟即可</li>
+              <li>遇到重点难点可暂停视频记笔记，或反复观看加深理解</li>
+              <li>建议使用WiFi环境观看，节省手机流量</li>
+              <li>如视频卡顿，可暂停等待缓冲或检查网络连接</li>
+              <li>课程完成后可获得相应积分奖励，记得查看哦</li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-divider">
+            <h2><i class="fas fa-file-alt"></i> 在线考试</h2>
+            <p>轻松应考，即时反馈</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">参加考试流程</h2>
+            <p class="slide-subtitle">EXAM PROCESS</p>
+          </div>
+          <div class="step-wrapper">
+            <div class="step-guide">
+              <div class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                  <h4>选择考试</h4>
+                  <p>在首页"我的考试"区域，点击待参加的考试</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                  <h4>开始答题</h4>
+                  <p>阅读考试须知后点击"开始考试"，注意考试时长限制</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                  <h4>提交试卷</h4>
+                  <p>答完所有题目后点击"提交试卷"，确认后即可提交</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                  <h4>查看成绩</h4>
+                  <p>提交后立即显示成绩，客观题自动评分，主观题待老师批改</p>
+                </div>
+              </div>
+            </div>
+            <div class="phone-showcase">
+              <div class="phone-mockup">
+                <div class="phone-screen">
+                  <img src="image/小程序-我的考试.PNG" alt="我的考试" />
+                </div>
+              </div>
+              <div class="phone-label">我的考试页面</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">成绩查询与错题复习</h2>
+            <p class="slide-subtitle">RESULTS & REVIEW</p>
+          </div>
+          <div class="step-wrapper">
+            <div class="step-guide">
+              <div class="step-item">
+                <div class="step-number"><i class="fas fa-chart-bar"></i></div>
+                <div class="step-content">
+                  <h4>成绩查询</h4>
+                  <p>在个人中心可查看所有历史考试成绩，了解学习成果</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number"><i class="fas fa-bookmark"></i></div>
+                <div class="step-content">
+                  <h4>错题自动收集</h4>
+                  <p>答错的题目自动加入错题本，方便针对性复习</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number"><i class="fas fa-redo"></i></div>
+                <div class="step-content">
+                  <h4>错题复习</h4>
+                  <p>定期复习错题本，巩固薄弱环节，真正掌握知识</p>
+                </div>
+              </div>
+            </div>
+            <div class="phone-showcase">
+              <div class="phone-mockup">
+                <div class="phone-screen">
+                  <img src="image/小程序-成绩查询.PNG" alt="成绩查询" />
+                </div>
+              </div>
+              <div class="phone-label">成绩查询页面</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-divider">
+            <h2><i class="fas fa-gift"></i> 积分商城</h2>
+            <p>学习有回报，积分兑好礼</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">积分获取与使用</h2>
+            <p class="slide-subtitle">POINTS SYSTEM</p>
+          </div>
+          <div class="step-wrapper">
+            <div class="step-guide">
+              <div class="step-item">
+                <div class="step-number"><i class="fas fa-plus-circle"></i></div>
+                <div class="step-content">
+                  <h4>如何获得积分</h4>
+                  <p>完成课程学习 +10~50积分<br />通过考试 +20~100积分<br />每日登录 +5积分</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number"><i class="fas fa-shopping-cart"></i></div>
+                <div class="step-content">
+                  <h4>如何兑换奖品</h4>
+                  <p>进入积分商城，选择心仪商品<br />点击"立即兑换"，确认积分足够<br />填写收货信息，等待发放</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-number"><i class="fas fa-history"></i></div>
+                <div class="step-content">
+                  <h4>积分明细查询</h4>
+                  <p>在个人中心可查看所有积分收支记录，清清楚楚每一笔</p>
+                </div>
+              </div>
+            </div>
+            <div class="phone-showcase">
+              <div class="phone-mockup">
+                <div class="phone-screen">
+                  <img src="image/小程序-积分商城.PNG" alt="积分商城" />
+                </div>
+              </div>
+              <div class="phone-label">积分商城页面</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">常见问题解答</h2>
+            <p class="slide-subtitle">FAQ</p>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">Q: 学习进度没有保存怎么办？</div>
+            <div class="faq-answer">A: 请确保网络连接正常，正常退出小程序会自动保存进度。如遇问题，可尝试重新进入小程序，或联系管理员反馈。</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">Q: 考试过程中可以退出吗？</div>
+            <div class="faq-answer">A: 考试过程中建议不要退出，退出后计时仍会继续。如因特殊情况中断，可重新进入继续答题，但请注意考试截止时间。</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">Q: 积分兑换的奖品多久能收到？</div>
+            <div class="faq-answer">A: 积分兑换申请后，管理员会在3个工作日内审核，审核通过后7个工作日内安排发放，具体时间以实际采购周期为准。</div>
+          </div>
+        </section>
+
+        <section>
+          <div class="end-slide">
+            <h2 class="end-title">祝您学习愉快</h2>
+            <p class="end-subtitle">学有所成，不断进步</p>
+            <div class="end-qr"><i class="fas fa-headset"></i>&nbsp;&nbsp; 如有问题请联系管理员</div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: 'c/t',
+        controls: true,
+        progress: true,
+        center: false,
+        transition: 'slide',
+        backgroundTransition: 'fade',
+        mouseWheel: true,
+        touch: true,
+        width: 1100,
+        height: 700,
+        margin: 0.08,
+      });
+    </script>
+  </body>
+</html>

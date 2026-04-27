@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="医疗培训平台管理层汇报材料，展示投资回报率分析、成本效益对比、核心数据指标、培训管理效率提升及战略发展规划" />
+    <title>医疗培训平台 - 管理层汇报</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      :root {
+        --primary: #1a365d;
+        --secondary: #2c5282;
+        --accent: #d69e2e;
+        --success: #38a169;
+        --danger: #e53e3e;
+        --light: #e2e8f0;
+        --text: #2d3748;
+        --text-light: #718096;
+      }
+
+      .reveal {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        color: var(--text);
+      }
+
+      .reveal .slides {
+        text-align: left;
+        width: 100%;
+        max-width: 1100px;
+      }
+
+      .reveal .slides section {
+        width: 100%;
+        padding: 0;
+      }
+
+      .cover-slide {
+        position: relative;
+        height: 650px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .cover-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        border-radius: 12px;
+        overflow: hidden;
+        background: linear-gradient(135deg, #1a365d, #2c5282);
+        opacity: 0.05;
+      }
+
+      .cover-content {
+        padding: 50px 60px;
+      }
+
+      .cover-title {
+        font-size: 44px;
+        font-weight: 800;
+        color: var(--primary);
+        line-height: 1.2;
+        margin-bottom: 15px;
+        letter-spacing: -1px;
+      }
+
+      .cover-subtitle {
+        font-size: 24px;
+        color: var(--accent);
+        font-weight: 300;
+        margin-bottom: 30px;
+      }
+
+      .cover-meta {
+        font-size: 15px;
+        color: var(--text-light);
+        border-top: 1px solid var(--light);
+        padding-top: 20px;
+        margin-top: 20px;
+      }
+
+      .slide-header {
+        margin-bottom: 25px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid var(--light);
+      }
+
+      .slide-title {
+        font-size: 30px;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 0;
+      }
+
+      .slide-subtitle {
+        font-size: 14px;
+        color: var(--text-light);
+        margin-top: 6px;
+        font-weight: 400;
+      }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+
+      .kpi-card {
+        background: linear-gradient(135deg, #f7fafc, #edf2f7);
+        border-radius: 12px;
+        padding: 25px 20px;
+        text-align: center;
+        border-top: 3px solid var(--accent);
+      }
+
+      .kpi-value {
+        font-size: 36px;
+        font-weight: 800;
+        color: var(--primary);
+        margin-bottom: 5px;
+      }
+
+      .kpi-value.up {
+        color: var(--success);
+      }
+
+      .kpi-label {
+        font-size: 14px;
+        color: var(--text-light);
+        font-weight: 500;
+      }
+
+      .kpi-trend {
+        font-size: 12px;
+        color: var(--success);
+        margin-top: 5px;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 15px;
+        text-align: center;
+        border-bottom: 1px solid var(--light);
+      }
+
+      .comparison-table th {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        font-weight: 600;
+      }
+
+      .comparison-table td:first-child {
+        text-align: left;
+        font-weight: 500;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background: #f7fafc;
+      }
+
+      .highlight-positive {
+        color: var(--success);
+        font-weight: 600;
+      }
+
+      .highlight-negative {
+        color: var(--danger);
+        font-weight: 600;
+      }
+
+      .roi-analysis {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+      }
+
+      .roi-chart {
+        flex: 1;
+        text-align: center;
+      }
+
+      .roi-circle {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: conic-gradient(var(--success) 0% 75%, var(--light) 75% 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        position: relative;
+      }
+
+      .roi-circle-inner {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .roi-percent {
+        font-size: 42px;
+        font-weight: 800;
+        color: var(--success);
+      }
+
+      .roi-label {
+        font-size: 14px;
+        color: var(--text-light);
+      }
+
+      .roi-details {
+        flex: 1;
+      }
+
+      .roi-item {
+        padding: 15px;
+        background: #f7fafc;
+        border-radius: 10px;
+        margin-bottom: 12px;
+        border-left: 4px solid var(--accent);
+      }
+
+      .roi-item h4 {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--primary);
+        margin: 0 0 5px 0;
+      }
+
+      .roi-item p {
+        font-size: 13px;
+        color: var(--text);
+        margin: 0;
+      }
+
+      .dashboard-showcase {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .dashboard-showcase img {
+        width: 100%;
+        display: block;
+      }
+
+      .benefit-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .benefit-card {
+        background: linear-gradient(135deg, #f7fafc, #edf2f7);
+        border-radius: 12px;
+        padding: 25px;
+        border-top: 3px solid var(--accent);
+      }
+
+      .benefit-card i {
+        font-size: 32px;
+        color: var(--primary);
+        margin-bottom: 15px;
+      }
+
+      .benefit-card h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 10px;
+      }
+
+      .benefit-card ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      .benefit-card li {
+        font-size: 13px;
+        color: var(--text);
+        line-height: 1.7;
+        margin-bottom: 5px;
+      }
+
+      .roadmap {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        padding: 40px 0;
+      }
+
+      .roadmap::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        transform: translateY(-50%);
+      }
+
+      .roadmap-item {
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .roadmap-dot {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .roadmap-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 5px;
+      }
+
+      .roadmap-desc {
+        font-size: 12px;
+        color: var(--text-light);
+      }
+
+      .end-slide {
+        text-align: center;
+        padding: 80px 30px;
+      }
+
+      .end-title {
+        font-size: 42px;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 25px;
+      }
+
+      .end-subtitle {
+        font-size: 20px;
+        color: var(--text-light);
+        margin-bottom: 40px;
+      }
+
+      .reveal .slides section {
+        opacity: 0;
+        transition: opacity 0.6s ease;
+      }
+
+      .reveal .slides section.present {
+        opacity: 1;
+      }
+
+      .reveal h1,
+      .reveal h2,
+      .reveal h3,
+      .reveal h4 {
+        text-transform: none;
+      }
+
+      .reveal .controls {
+        color: var(--primary);
+      }
+
+      .reveal .progress {
+        color: var(--accent);
+      }
+
+      .section-divider {
+        text-align: center;
+        padding: 70px 30px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 14px;
+        color: white;
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .section-divider h2 {
+        font-size: 36px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 15px;
+      }
+
+      .section-divider p {
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 300;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <div class="cover-slide">
+            <div class="cover-bg"></div>
+            <div class="cover-content">
+              <div class="cover-title">医疗培训平台</div>
+              <div class="cover-subtitle">管理层汇报</div>
+              <div class="cover-tagline">数字化转型赋能医疗培训 · 降本增效提升管理水平</div>
+              <div class="cover-meta">汇报部门：信息科 / 教育培训科 &nbsp;&nbsp;|&nbsp;&nbsp; 汇报日期：2026年</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">目录</h2>
+            <p class="slide-subtitle">AGENDA</p>
+          </div>
+          <div class="benefit-cards">
+            <div class="benefit-card">
+              <i class="fas fa-chart-line"></i>
+              <h3>核心数据指标</h3>
+              <ul>
+                <li>培训覆盖率、完成率</li>
+                <li>成本节约数据</li>
+                <li>用户满意度统计</li>
+              </ul>
+            </div>
+            <div class="benefit-card">
+              <i class="fas fa-balance-scale"></i>
+              <h3>成本效益分析</h3>
+              <ul>
+                <li>传统模式 vs 数字化模式</li>
+                <li>投资回报(ROI)分析</li>
+                <li>长期价值预估</li>
+              </ul>
+            </div>
+            <div class="benefit-card">
+              <i class="fas fa-cogs"></i>
+              <h3>管理效率提升</h3>
+              <ul>
+                <li>全流程自动化</li>
+                <li>数据实时监控</li>
+                <li>合规审计支持</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-divider">
+            <h2><i class="fas fa-chart-bar"></i> 核心数据指标</h2>
+            <p>用数据说话，直观展现平台价值</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">关键绩效指标 (KPI)</h2>
+            <p class="slide-subtitle">KEY PERFORMANCE INDICATORS</p>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-value up">98%</div>
+              <div class="kpi-label">培训覆盖率</div>
+              <div class="kpi-trend"><i class="fas fa-arrow-up"></i> +23% 同比</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-value up">92%</div>
+              <div class="kpi-label">课程完成率</div>
+              <div class="kpi-trend"><i class="fas fa-arrow-up"></i> +35% 同比</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-value up">85%</div>
+              <div class="kpi-label">考试通过率</div>
+              <div class="kpi-trend"><i class="fas fa-arrow-up"></i> +18% 同比</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-value up">¥68万</div>
+              <div class="kpi-label">年度成本节约</div>
+              <div class="kpi-trend"><i class="fas fa-arrow-up"></i> 持续增长</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">管理数据驾驶舱</h2>
+            <p class="slide-subtitle">MANAGEMENT DASHBOARD</p>
+          </div>
+          <div class="dashboard-showcase">
+            <img src="image/02-首页-统计分析.png" alt="统计分析仪表盘" />
+          </div>
+        </section>
+
+        <section>
+          <div class="section-divider">
+            <h2><i class="fas fa-balance-scale"></i> 成本效益分析</h2>
+            <p>每一分投入都产生实实在在的价值</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">传统模式 vs 数字化模式</h2>
+            <p class="slide-subtitle">COST COMPARISON</p>
+          </div>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>成本项目</th>
+                <th>传统培训模式</th>
+                <th>数字化培训平台</th>
+                <th>节约/改善</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>纸质教材印刷</td>
+                <td>¥150,000/年</td>
+                <td class="highlight-positive">¥0</td>
+                <td class="highlight-positive">100% 节约</td>
+              </tr>
+              <tr>
+                <td>人工改卷统计</td>
+                <td>¥120,000/年</td>
+                <td class="highlight-positive">¥0</td>
+                <td class="highlight-positive">100% 节约</td>
+              </tr>
+              <tr>
+                <td>培训场地费用</td>
+                <td>¥80,000/年</td>
+                <td class="highlight-positive">¥0</td>
+                <td class="highlight-positive">100% 节约</td>
+              </tr>
+              <tr>
+                <td>医护误工成本</td>
+                <td>¥330,000/年</td>
+                <td class="highlight-positive">¥80,000/年</td>
+                <td class="highlight-positive">76% 节约</td>
+              </tr>
+              <tr>
+                <td>管理人力投入</td>
+                <td>2人全职</td>
+                <td class="highlight-positive">0.2人兼职</td>
+                <td class="highlight-positive">90% 效率提升</td>
+              </tr>
+              <tr>
+                <td><strong>年度总成本</strong></td>
+                <td><strong>¥680,000/年</strong></td>
+                <td class="highlight-positive"><strong>¥80,000/年</strong></td>
+                <td class="highlight-positive"><strong>88% 总成本节约</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">投资回报率 (ROI) 分析</h2>
+            <p class="slide-subtitle">RETURN ON INVESTMENT</p>
+          </div>
+          <div class="roi-analysis">
+            <div class="roi-chart">
+              <div class="roi-circle">
+                <div class="roi-circle-inner">
+                  <span class="roi-percent">8.5x</span>
+                  <span class="roi-label">投资回报率</span>
+                </div>
+              </div>
+              <p style="font-size: 14px; color: var(--text-light)">首年投入 8万元，产出 68万元价值</p>
+            </div>
+            <div class="roi-details">
+              <div class="roi-item">
+                <h4><i class="fas fa-check-circle" style="color: var(--success)"></i> 直接成本节约</h4>
+                <p>省去印刷、场地、差旅等直接成本，年节约约35万元</p>
+              </div>
+              <div class="roi-item">
+                <h4><i class="fas fa-check-circle" style="color: var(--success)"></i> 人力成本节约</h4>
+                <p>减少培训管理人员投入，释放人力到更重要的工作</p>
+              </div>
+              <div class="roi-item">
+                <h4><i class="fas fa-check-circle" style="color: var(--success)"></i> 误工减少收益</h4>
+                <p>医护人员无需离岗集中培训，年减少误工损失超30万元</p>
+              </div>
+              <div class="roi-item">
+                <h4><i class="fas fa-check-circle" style="color: var(--success)"></i> 长期合规价值</h4>
+                <p>培训记录永久可追溯，满足医疗行业监管要求，规避合规风险</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-divider">
+            <h2><i class="fas fa-cogs"></i> 管理效率提升</h2>
+            <p>智能化管理，让培训工作更高效</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">培训管理全方位提升</h2>
+            <p class="slide-subtitle">MANAGEMENT EFFICIENCY IMPROVEMENT</p>
+          </div>
+          <div class="benefit-cards">
+            <div class="benefit-card">
+              <i class="fas fa-robot"></i>
+              <h3>全流程自动化</h3>
+              <ul>
+                <li>自动统计学习进度</li>
+                <li>自动评分、排名</li>
+                <li>自动生成培训报告</li>
+                <li>自动提醒未完成人员</li>
+              </ul>
+            </div>
+            <div class="benefit-card">
+              <i class="fas fa-eye"></i>
+              <h3>数据实时监控</h3>
+              <ul>
+                <li>谁学了谁没学一目了然</li>
+                <li>各科室培训情况对比</li>
+                <li>薄弱环节精准识别</li>
+                <li>支持多维度数据导出</li>
+              </ul>
+            </div>
+            <div class="benefit-card">
+              <i class="fas fa-shield-alt"></i>
+              <h3>合规审计支持</h3>
+              <ul>
+                <li>所有培训记录永久保存</li>
+                <li>操作日志全程可追溯</li>
+                <li>满足等级医院评审要求</li>
+                <li>一键导出审计所需数据</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">核心功能模块管理</h2>
+            <p class="slide-subtitle">CORE MANAGEMENT MODULES</p>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px">
+            <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1)">
+              <img src="image/07-课程管理-课程列表.png" style="width: 100%; display: block" alt="课程管理" />
+              <div style="padding: 15px; background: #f7fafc">
+                <h4 style="margin: 0 0 5px 0; color: var(--primary)">课程管理</h4>
+                <p style="margin: 0; font-size: 13px; color: var(--text-light)">视频上传、分类管理、学习进度追踪</p>
+              </div>
+            </div>
+            <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1)">
+              <img src="image/10-考试管理-考试列表.png" style="width: 100%; display: block" alt="考试管理" />
+              <div style="padding: 15px; background: #f7fafc">
+                <h4 style="margin: 0 0 5px 0; color: var(--primary)">考试管理</h4>
+                <p style="margin: 0; font-size: 13px; color: var(--text-light)">智能组卷、考试安排、自动阅卷、成绩分析</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-divider" style="background: linear-gradient(135deg, #2f855a, #38a169)">
+            <h2><i class="fas fa-road"></i> 未来发展规划</h2>
+            <p>持续迭代，打造智慧医疗培训生态</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">发展路线图</h2>
+            <p class="slide-subtitle">DEVELOPMENT ROADMAP</p>
+          </div>
+          <div class="roadmap">
+            <div class="roadmap-item">
+              <div class="roadmap-dot">1</div>
+              <div class="roadmap-title">基础功能完善</div>
+              <div class="roadmap-desc">课程、考试、题库<br />用户、权限管理</div>
+            </div>
+            <div class="roadmap-item">
+              <div class="roadmap-dot">2</div>
+              <div class="roadmap-title">激励体系建设</div>
+              <div class="roadmap-desc">积分、等级、排行榜<br />积分商城兑换</div>
+            </div>
+            <div class="roadmap-item">
+              <div class="roadmap-dot">3</div>
+              <div class="roadmap-title">AI智能赋能</div>
+              <div class="roadmap-desc">智能出题、个性化推荐<br />学习路径规划</div>
+            </div>
+            <div class="roadmap-item">
+              <div class="roadmap-dot">4</div>
+              <div class="roadmap-title">生态系统构建</div>
+              <div class="roadmap-desc">多院区协同<br />与HIS系统对接</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="end-slide">
+            <h2 class="end-title">汇报完毕</h2>
+            <p class="end-subtitle">请各位领导批评指正</p>
+            <div style="display: inline-block; padding: 16px 50px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-radius: 40px; font-size: 18px"><i class="fas fa-lightbulb"></i>&nbsp;&nbsp; 数字化培训，降本又增效</div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: 'c/t',
+        controls: true,
+        progress: true,
+        center: false,
+        transition: 'slide',
+        backgroundTransition: 'fade',
+        mouseWheel: true,
+        touch: true,
+        width: 1100,
+        height: 700,
+        margin: 0.08,
+      });
+    </script>
+  </body>
+</html>

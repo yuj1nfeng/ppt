@@ -3,17 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="医院培训平台核心价值汇报，面向医院管理层和投资方，展示系统对管理层和医务人员的双重价值，以及双端协同的完美闭环" />
-    <title>医院培训平台 - 核心价值汇报</title>
+    <meta name="description" content="医疗培训平台系统功能全面介绍，包含8大核心功能模块详解、PC管理端与微信小程序双端功能矩阵对比及系统技术架构说明" />
+    <title>医疗培训平台 - 系统功能</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
       :root {
-        --primary: #1a365d;
-        --secondary: #2c5282;
-        --accent: #ed8936;
-        --gold: #d69e2e;
+        --primary: #0984e3;
+        --secondary: #74b9ff;
+        --accent: #00cec9;
+        --dark: #2d3436;
         --light: #e2e8f0;
         --text: #2d3748;
         --text-light: #718096;
@@ -52,14 +52,8 @@
         z-index: -1;
         border-radius: 12px;
         overflow: hidden;
-      }
-
-      .cover-bg img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        opacity: 0.12;
-        filter: grayscale(30%);
+        background: linear-gradient(135deg, #0984e3, #00cec9);
+        opacity: 0.08;
       }
 
       .cover-content {
@@ -67,7 +61,7 @@
       }
 
       .cover-title {
-        font-size: 44px;
+        font-size: 42px;
         font-weight: 800;
         color: var(--primary);
         line-height: 1.2;
@@ -76,16 +70,16 @@
       }
 
       .cover-subtitle {
-        font-size: 24px;
+        font-size: 22px;
         color: var(--accent);
         font-weight: 300;
         margin-bottom: 30px;
       }
 
-      .cover-tagline {
-        font-size: 16px;
+      .cover-features {
+        font-size: 15px;
         color: var(--text-light);
-        border-left: 4px solid var(--gold);
+        border-left: 4px solid var(--accent);
         padding-left: 20px;
       }
 
@@ -109,301 +103,226 @@
         font-weight: 400;
       }
 
-      .toc-item {
-        display: flex;
-        align-items: center;
-        padding: 14px 0;
-        border-bottom: 1px solid var(--light);
+      .module-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
       }
 
-      .toc-number {
-        width: 42px;
-        height: 42px;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: white;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-        font-weight: 700;
-        margin-right: 20px;
-      }
-
-      .toc-text {
-        font-size: 20px;
-        font-weight: 500;
-        color: var(--text);
-      }
-
-      .value-card-wrapper {
-        display: flex;
-        gap: 25px;
-        align-items: stretch;
-        height: 420px;
-      }
-
-      .value-card {
-        flex: 1;
-        background: linear-gradient(135deg, #f7fafc, #edf2f7);
-        border-radius: 14px;
-        padding: 30px;
-        border-top: 3px solid var(--accent);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      .value-icon {
-        width: 55px;
-        height: 55px;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
+      .module-card {
+        background: linear-gradient(135deg, #f5faff, #e8f4fd);
         border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 18px;
+        padding: 20px 15px;
+        text-align: center;
+        border-top: 3px solid var(--primary);
+        transition: all 0.3s ease;
       }
 
-      .value-icon i {
-        font-size: 24px;
-        color: white;
+      .module-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(9, 132, 227, 0.15);
       }
 
-      .value-title {
-        font-size: 22px;
-        font-weight: 700;
+      .module-card i {
+        font-size: 28px;
         color: var(--primary);
-        margin-bottom: 12px;
+        margin-bottom: 10px;
       }
 
-      .value-desc {
+      .module-card h4 {
         font-size: 15px;
-        color: var(--text);
-        line-height: 1.7;
-      }
-
-      .value-screenshot {
-        flex: 1;
-        border-radius: 14px;
-        overflow: hidden;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-        height: 100%;
-      }
-
-      .value-screenshot img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      }
-
-      .mini-program-wrapper {
-        display: flex;
-        gap: 30px;
-        align-items: center;
-        height: 420px;
-      }
-
-      .mini-program-card {
-        flex: 1;
-        background: linear-gradient(135deg, #f7fafc, #edf2f7);
-        border-radius: 14px;
-        padding: 30px;
-        border-top: 3px solid #4299e1;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      }
-
-      .mini-program-card .value-icon {
-        background: linear-gradient(135deg, #4299e1, #3182ce);
-      }
-
-      .phone-container {
-        flex: 0 0 220px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .phone-mockup {
-        width: 200px;
-        height: 400px;
-        background: #1a202c;
-        border-radius: 28px;
-        padding: 10px;
-        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
-        position: relative;
-      }
-
-      .phone-mockup::before {
-        content: '';
-        position: absolute;
-        top: 16px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60px;
-        height: 5px;
-        background: #2d3748;
-        border-radius: 3px;
-      }
-
-      .phone-screen {
-        width: 100%;
-        height: 100%;
-        background: white;
-        border-radius: 22px;
-        overflow: hidden;
-      }
-
-      .phone-screen img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      }
-
-      .phone-label {
-        text-align: center;
-        margin-top: 12px;
-        font-size: 12px;
-        color: var(--text-light);
-        font-weight: 500;
-      }
-
-      .core-value-statement {
-        text-align: center;
-        padding: 60px 30px;
-      }
-
-      .statement-text {
-        font-size: 36px;
-        font-weight: 300;
-        color: var(--primary);
-        line-height: 1.5;
-        margin-bottom: 25px;
-      }
-
-      .statement-highlight {
-        font-weight: 700;
-        color: var(--accent);
-      }
-
-      .statement-divider {
-        width: 80px;
-        height: 4px;
-        background: linear-gradient(90deg, var(--gold), var(--accent));
-        margin: 0 auto 25px;
-        border-radius: 2px;
-      }
-
-      .statement-tag {
-        display: inline-block;
-        padding: 8px 25px;
-        background: var(--primary);
-        color: white;
-        border-radius: 25px;
-        font-size: 16px;
-        font-weight: 500;
-      }
-
-      .dual-platform {
-        display: flex;
-        gap: 35px;
-        padding: 10px 0;
-      }
-
-      .platform-col {
-        flex: 1;
-        text-align: center;
-      }
-
-      .platform-title {
-        font-size: 18px;
         font-weight: 600;
         color: var(--primary);
-        margin-bottom: 15px;
-        padding-bottom: 12px;
-        border-bottom: 3px solid var(--light);
+        margin: 0 0 5px 0;
       }
 
-      .platform-title.management {
-        border-color: var(--accent);
-      }
-
-      .platform-title.staff {
-        border-color: #4299e1;
-      }
-
-      .platform-features {
-        text-align: left;
-        padding: 0 15px;
-      }
-
-      .platform-feature-item {
-        padding: 8px 0;
-        font-size: 14px;
-        color: var(--text);
-        border-bottom: 1px dashed var(--light);
-      }
-
-      .platform-feature-item i {
-        color: var(--accent);
-        margin-right: 8px;
+      .module-card p {
         font-size: 12px;
+        color: var(--text-light);
+        margin: 0;
+        line-height: 1.4;
       }
 
-      .feature-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
+      .feature-detail {
+        display: flex;
+        gap: 30px;
+        align-items: flex-start;
+      }
+
+      .feature-screenshot {
+        flex: 1;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      }
+
+      .feature-screenshot img {
+        width: 100%;
+        display: block;
+      }
+
+      .feature-list {
+        flex: 1;
       }
 
       .feature-item {
-        text-align: center;
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 15px;
+        padding: 12px;
+        background: #f5faff;
+        border-radius: 8px;
+        border-left: 3px solid var(--accent);
       }
 
-      .feature-item img {
-        width: 100%;
-        height: 130px;
-        object-fit: cover;
-        border-radius: 10px;
-        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+      .feature-item i {
+        color: var(--primary);
+        margin-right: 10px;
+        margin-top: 2px;
+        font-size: 14px;
+      }
+
+      .feature-item span {
+        font-size: 14px;
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      .platform-matrix {
+        display: flex;
+        gap: 20px;
+      }
+
+      .platform-column {
+        flex: 1;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .platform-header {
+        padding: 20px;
+        text-align: center;
+        color: white;
+      }
+
+      .platform-header.management {
+        background: linear-gradient(135deg, var(--primary), #065aa3);
+      }
+
+      .platform-header.mini {
+        background: linear-gradient(135deg, var(--accent), #00a8a3);
+      }
+
+      .platform-header i {
+        font-size: 28px;
         margin-bottom: 8px;
       }
 
-      .feature-label {
-        font-size: 12px;
-        color: var(--text-light);
-        font-weight: 500;
-      }
-
-      .end-slide {
-        text-align: center;
-        padding: 80px 30px;
-      }
-
-      .end-title {
-        font-size: 42px;
-        font-weight: 700;
-        color: var(--primary);
-        margin-bottom: 25px;
-      }
-
-      .end-subtitle {
-        font-size: 20px;
-        color: var(--text-light);
-        margin-bottom: 40px;
-      }
-
-      .end-contact {
-        display: inline-block;
-        padding: 16px 50px;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: white;
-        border-radius: 40px;
+      .platform-header h3 {
         font-size: 18px;
+        font-weight: 600;
+        margin: 0 0 5px 0;
+      }
+
+      .platform-header p {
+        font-size: 12px;
+        opacity: 0.8;
+        margin: 0;
+      }
+
+      .platform-features {
+        padding: 15px;
+        background: #f8fafc;
+      }
+
+      .platform-feature-row {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--light);
+      }
+
+      .platform-feature-row:last-child {
+        border-bottom: none;
+      }
+
+      .platform-feature-row i.fa-check {
+        color: #10b981;
+        margin-right: 10px;
+      }
+
+      .platform-feature-row span {
+        font-size: 13px;
+        color: var(--text);
+      }
+
+      .tech-arch {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .arch-layer {
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        color: white;
+      }
+
+      .arch-layer.layer1 {
+        background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+      }
+
+      .arch-layer.layer2 {
+        background: linear-gradient(90deg, #0984e3, #74b9ff);
+      }
+
+      .arch-layer.layer3 {
+        background: linear-gradient(90deg, #00b894, #81ecec);
+      }
+
+      .arch-layer.layer4 {
+        background: linear-gradient(90deg, #fdcb6e, #ffeaa7);
+        color: #2d3436;
+      }
+
+      .arch-layer h4 {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0 0 5px 0;
+      }
+
+      .arch-layer p {
+        font-size: 12px;
+        margin: 0;
+        opacity: 0.9;
+      }
+
+      .screenshot-gallery {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .gallery-item {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .gallery-item img {
+        width: 100%;
+        display: block;
+        height: 120px;
+        object-fit: cover;
+      }
+
+      .gallery-label {
+        padding: 10px;
+        background: #f8fafc;
+        font-size: 12px;
+        text-align: center;
+        color: var(--text);
+        font-weight: 500;
       }
 
       .reveal .slides section {
@@ -433,7 +352,7 @@
       .section-divider {
         text-align: center;
         padding: 70px 30px;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        background: linear-gradient(135deg, var(--primary), var(--accent));
         border-radius: 14px;
         color: white;
         height: 400px;
@@ -454,6 +373,33 @@
         color: rgba(255, 255, 255, 0.8);
         font-weight: 300;
       }
+
+      .end-slide {
+        text-align: center;
+        padding: 80px 30px;
+      }
+
+      .end-title {
+        font-size: 42px;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 25px;
+      }
+
+      .end-subtitle {
+        font-size: 20px;
+        color: var(--text-light);
+        margin-bottom: 40px;
+      }
+
+      .end-qr {
+        display: inline-block;
+        padding: 16px 50px;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        color: white;
+        border-radius: 40px;
+        font-size: 18px;
+      }
     </style>
   </head>
   <body>
@@ -461,284 +407,168 @@
       <div class="slides">
         <section>
           <div class="cover-slide">
-            <div class="cover-bg">
-              <img src="image/02-首页-统计分析.png" alt="背景" />
-            </div>
+            <div class="cover-bg"></div>
             <div class="cover-content">
-              <div class="cover-title">医院培训平台</div>
-              <div class="cover-subtitle">核心价值汇报</div>
-              <div class="cover-tagline">数字化培训，降本又增效 · 管理端+小程序双端覆盖</div>
+              <div class="cover-title">医疗培训平台</div>
+              <div class="cover-subtitle">系统功能全面介绍</div>
+              <div class="cover-features">8大核心功能模块 · PC管理端 + 微信小程序双端覆盖 · 全流程培训管理闭环</div>
             </div>
           </div>
         </section>
 
         <section>
           <div class="slide-header">
-            <h2 class="slide-title">目录</h2>
-            <p class="slide-subtitle">CONTENTS</p>
+            <h2 class="slide-title">系统功能全景图</h2>
+            <p class="slide-subtitle">SYSTEM FUNCTION OVERVIEW</p>
           </div>
-          <div class="toc-list">
-            <div class="toc-item">
-              <div class="toc-number">01</div>
-              <div class="toc-text">系统核心价值观</div>
+          <div class="module-grid">
+            <div class="module-card">
+              <i class="fas fa-users"></i>
+              <h4>用户管理</h4>
+              <p>科室组织架构<br />角色权限管理</p>
             </div>
-            <div class="toc-item">
-              <div class="toc-number">02</div>
-              <div class="toc-text">对医院管理层 · 管理端</div>
+            <div class="module-card">
+              <i class="fas fa-play-circle"></i>
+              <h4>课程管理</h4>
+              <p>视频课程上传<br />学习进度追踪</p>
             </div>
-            <div class="toc-item">
-              <div class="toc-number">03</div>
-              <div class="toc-text">对医务人员 · 小程序端</div>
+            <div class="module-card">
+              <i class="fas fa-file-alt"></i>
+              <h4>考试管理</h4>
+              <p>智能组卷安排<br />自动成绩统计</p>
             </div>
-            <div class="toc-item">
-              <div class="toc-number">04</div>
-              <div class="toc-text">双端协同功能概览</div>
+            <div class="module-card">
+              <i class="fas fa-book"></i>
+              <h4>题库管理</h4>
+              <p>题库分类管理<br />题目批量导入</p>
             </div>
-          </div>
-        </section>
-
-        <section>
-          <div class="core-value-statement">
-            <div class="statement-divider"></div>
-            <p class="statement-text">
-              让医院培训<span class="statement-highlight">变得简单高效</span>，<br />
-              让医务人员学习<span class="statement-highlight">随时随地</span>
-            </p>
-            <span class="statement-tag"> <i class="fas fa-quote-left"></i>&nbsp;&nbsp;数字化培训，降本又增效 </span>
+            <div class="module-card">
+              <i class="fas fa-coins"></i>
+              <h4>积分体系</h4>
+              <p>积分等级设置<br />积分明细查询</p>
+            </div>
+            <div class="module-card">
+              <i class="fas fa-gift"></i>
+              <h4>积分商城</h4>
+              <p>商品上架管理<br />兑换订单处理</p>
+            </div>
+            <div class="module-card">
+              <i class="fas fa-bullhorn"></i>
+              <h4>通知公告</h4>
+              <p>站内消息推送<br />微信模板通知</p>
+            </div>
+            <div class="module-card">
+              <i class="fas fa-cog"></i>
+              <h4>系统设置</h4>
+              <p>基础参数配置<br />操作日志审计</p>
+            </div>
           </div>
         </section>
 
         <section>
           <div class="section-divider">
-            <h2><i class="fas fa-building"></i> 对医院管理层</h2>
-            <p>后台管理系统 · 全流程数字化管控</p>
+            <h2><i class="fas fa-desktop"></i> PC管理端功能详解</h2>
+            <p>管理员后台 · 全方位培训管控</p>
           </div>
         </section>
 
         <section>
           <div class="slide-header">
-            <h2 class="slide-title">对医院管理层</h2>
-            <p class="slide-subtitle">VALUE FOR HOSPITAL MANAGEMENT</p>
+            <h2 class="slide-title">数据统计仪表盘</h2>
+            <p class="slide-subtitle">DASHBOARD & ANALYTICS</p>
           </div>
-          <div class="value-card-wrapper">
-            <div class="value-card">
-              <div class="value-icon">
-                <i class="fas fa-coins"></i>
+          <div class="feature-detail">
+            <div class="feature-screenshot">
+              <img src="image/02-首页-统计分析.png" alt="统计分析" />
+            </div>
+            <div class="feature-list">
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>培训总览</strong> - 课程总数、考试总数、用户总数、完成率等核心指标一目了然</span>
               </div>
-              <h3 class="value-title">降本增效</h3>
-              <p class="value-desc">省去纸质印刷、人工改卷、人工统计，大量节省人力物力成本。 自动化流程让培训管理效率提升80%以上。</p>
-            </div>
-            <div class="value-screenshot">
-              <img src="image/11-考试管理-成绩管理.png" alt="成绩管理" />
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <div class="slide-header">
-            <h2 class="slide-title">对医院管理层</h2>
-            <p class="slide-subtitle">VALUE FOR HOSPITAL MANAGEMENT</p>
-          </div>
-          <div class="value-card-wrapper">
-            <div class="value-card">
-              <div class="value-icon">
-                <i class="fas fa-chart-line"></i>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>趋势图表</strong> - 月度学习趋势、考试通过率变化、人员活跃曲线等多维度图表展示</span>
               </div>
-              <h3 class="value-title">过程可控</h3>
-              <p class="value-desc">谁学了谁没学，学得怎么样，全部数据清晰可见，心里有数。 实时监控学习进度，确保培训效果。</p>
-            </div>
-            <div class="value-screenshot">
-              <img src="image/09-课程管理-学习进度.png" alt="学习进度" />
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <div class="slide-header">
-            <h2 class="slide-title">对医院管理层</h2>
-            <p class="slide-subtitle">VALUE FOR HOSPITAL MANAGEMENT</p>
-          </div>
-          <div class="value-card-wrapper">
-            <div class="value-card">
-              <div class="value-icon">
-                <i class="fas fa-balance-scale"></i>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>科室对比</strong> - 各科室培训情况横向对比排名，找准短板重点提升</span>
               </div>
-              <h3 class="value-title">标准化</h3>
-              <p class="value-desc">培训内容统一，考试标准统一，避免因人而异。 确保全院培训质量一致性，提升整体医疗水平。</p>
-            </div>
-            <div class="value-screenshot">
-              <img src="image/10-考试管理-考试列表.png" alt="考试列表" />
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>待办提醒</strong> - 待审批兑换、待发布课程、即将截止考试等重要事项提醒</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>数据导出</strong> - 支持Excel格式导出各类统计数据，方便汇报存档</span>
+              </div>
             </div>
           </div>
         </section>
 
         <section>
           <div class="slide-header">
-            <h2 class="slide-title">对医院管理层</h2>
-            <p class="slide-subtitle">VALUE FOR HOSPITAL MANAGEMENT</p>
+            <h2 class="slide-title">用户与权限管理</h2>
+            <p class="slide-subtitle">USER & PERMISSION MANAGEMENT</p>
           </div>
-          <div class="value-card-wrapper">
-            <div class="value-card">
-              <div class="value-icon">
-                <i class="fas fa-database"></i>
-              </div>
-              <h3 class="value-title">永久留存</h3>
-              <p class="value-desc">所有课程、考试记录永久保存，随时可查可追溯。 满足医疗行业合规审计要求。</p>
-            </div>
-            <div class="value-screenshot">
+          <div class="feature-detail">
+            <div class="feature-screenshot">
               <img src="image/03-用户管理-用户列表.png" alt="用户列表" />
             </div>
+            <div class="feature-list">
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>组织架构</strong> - 支持多级科室/部门架构，灵活适配医院组织体系</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>用户导入</strong> - 支持Excel批量导入用户账号，快速完成系统初始化</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>角色权限</strong> - 超级管理员、培训管理员、科室管理员等多角色权限配置</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>账号状态</strong> - 支持启用/禁用账号，离职人员账号即时冻结</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>积分管理</strong> - 可手动调整用户积分，支持积分清零、积分奖励等操作</span>
+              </div>
+            </div>
           </div>
         </section>
 
         <section>
           <div class="slide-header">
-            <h2 class="slide-title">对医院管理层</h2>
-            <p class="slide-subtitle">VALUE FOR HOSPITAL MANAGEMENT</p>
+            <h2 class="slide-title">课程管理模块</h2>
+            <p class="slide-subtitle">COURSE MANAGEMENT MODULE</p>
           </div>
-          <div class="value-card-wrapper">
-            <div class="value-card">
-              <div class="value-icon">
-                <i class="fas fa-calendar-check"></i>
-              </div>
-              <h3 class="value-title">灵活组织</h3>
-              <p class="value-desc">不需要集中安排时间地点，医务人员随时随地学习。 不影响正常医疗工作，大幅提升培训覆盖率。</p>
-            </div>
-            <div class="value-screenshot">
+          <div class="feature-detail">
+            <div class="feature-screenshot">
               <img src="image/07-课程管理-课程列表.png" alt="课程列表" />
             </div>
-          </div>
-        </section>
-
-        <section>
-          <div class="section-divider" style="background: linear-gradient(135deg, #4299e1, #3182ce)">
-            <h2><i class="fas fa-user-md"></i> 对医务人员</h2>
-            <p>微信小程序 · 移动学习随时随地</p>
-          </div>
-        </section>
-
-        <section>
-          <div class="slide-header">
-            <h2 class="slide-title">对医务人员 · 小程序端</h2>
-            <p class="slide-subtitle">VALUE FOR MEDICAL STAFF · MINI PROGRAM</p>
-          </div>
-          <div class="mini-program-wrapper">
-            <div class="mini-program-card">
-              <div class="value-icon">
-                <i class="fas fa-mobile-alt"></i>
+            <div class="feature-list">
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>视频上传</strong> - 支持MP4等主流视频格式，自动转码适配移动端</span>
               </div>
-              <h3 class="value-title">随时随地</h3>
-              <p class="value-desc">手机在手，想学就学，不占上班集中时间。 微信小程序，无需下载安装，打开即学。 利用交接班、午休等碎片化时间完成学习。</p>
-            </div>
-            <div class="phone-container">
-              <div class="phone-mockup">
-                <div class="phone-screen">
-                  <img src="image/小程序-首页.PNG" alt="小程序首页" />
-                </div>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>课程分类</strong> - 支持自定义课程分类（如：三基培训、院感、医德医风等）</span>
               </div>
-              <div class="phone-label">小程序首页 · 课程考试一目了然</div>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <div class="slide-header">
-            <h2 class="slide-title">对医务人员 · 小程序端</h2>
-            <p class="slide-subtitle">VALUE FOR MEDICAL STAFF · MINI PROGRAM</p>
-          </div>
-          <div class="mini-program-wrapper">
-            <div class="mini-program-card">
-              <div class="value-icon">
-                <i class="fas fa-play-circle"></i>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>学习进度</strong> - 实时追踪每位学员的学习进度，精确到秒的观看记录</span>
               </div>
-              <h3 class="value-title">自定进度</h3>
-              <p class="value-desc">可以暂停，可以回看，自己掌控学习节奏。 重点难点反复学习，直到真正掌握。 学习进度自动同步，多端无缝衔接。</p>
-            </div>
-            <div class="phone-container">
-              <div class="phone-mockup">
-                <div class="phone-screen">
-                  <img src="image/小程序-课程详情.PNG" alt="课程详情" />
-                </div>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>防拖拽设置</strong> - 可设置禁止视频快进，确保学员完整观看学习</span>
               </div>
-              <div class="phone-label">课程学习 · 支持暂停回播</div>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <div class="slide-header">
-            <h2 class="slide-title">对医务人员 · 小程序端</h2>
-            <p class="slide-subtitle">VALUE FOR MEDICAL STAFF · MINI PROGRAM</p>
-          </div>
-          <div class="mini-program-wrapper">
-            <div class="mini-program-card">
-              <div class="value-icon">
-                <i class="fas fa-bolt"></i>
-              </div>
-              <h3 class="value-title">即时反馈</h3>
-              <p class="value-desc">考完立刻出成绩，知道自己掌握得怎么样。 错题自动收集，针对性巩固薄弱环节。 成绩查询随时可查，历史记录一目了然。</p>
-            </div>
-            <div class="phone-container">
-              <div class="phone-mockup">
-                <div class="phone-screen">
-                  <img src="image/小程序-成绩查询.PNG" alt="成绩查询" />
-                </div>
-              </div>
-              <div class="phone-label">成绩查询 · 考完即出结果</div>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <div class="slide-header">
-            <h2 class="slide-title">对医务人员 · 小程序端</h2>
-            <p class="slide-subtitle">VALUE FOR MEDICAL STAFF · MINI PROGRAM</p>
-          </div>
-          <div class="mini-program-wrapper">
-            <div class="mini-program-card">
-              <div class="value-icon">
-                <i class="fas fa-trophy"></i>
-              </div>
-              <h3 class="value-title">激励机制</h3>
-              <p class="value-desc">积分+等级，持续激励主动学习。 学习考试获得积分，可在积分商城兑换丰富奖品。 排行榜激发学习热情，营造比学赶超氛围。</p>
-            </div>
-            <div class="phone-container">
-              <div class="phone-mockup">
-                <div class="phone-screen">
-                  <img src="image/小程序-积分商城.PNG" alt="积分商城" />
-                </div>
-              </div>
-              <div class="phone-label">积分商城 · 学习成果兑好礼</div>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <div class="slide-header">
-            <h2 class="slide-title">双端协同 · 完美闭环</h2>
-            <p class="slide-subtitle">MANAGEMENT + MINI PROGRAM SYNERGY</p>
-          </div>
-          <div class="dual-platform">
-            <div class="platform-col">
-              <h3 class="platform-title management"><i class="fas fa-desktop"></i> 管理端</h3>
-              <div class="platform-features">
-                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 课程创建与发布</div>
-                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 考试组卷与安排</div>
-                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 学习进度监控</div>
-                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 成绩统计分析</div>
-                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 积分商城管理</div>
-                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 用户权限管理</div>
-              </div>
-            </div>
-            <div class="platform-col">
-              <h3 class="platform-title staff"><i class="fas fa-mobile-alt"></i> 小程序端</h3>
-              <div class="platform-features">
-                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 在线课程学习</div>
-                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 在线参加考试</div>
-                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 错题本复习</div>
-                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 积分商城兑换</div>
-                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 积分明细查询</div>
-                <div class="platform-feature-item"><i class="fas fa-check-circle"></i> 个人学习档案</div>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>发布范围</strong> - 可按科室、按角色定向发布课程，精准培训目标人群</span>
               </div>
             </div>
           </div>
@@ -746,42 +576,230 @@
 
         <section>
           <div class="slide-header">
-            <h2 class="slide-title">核心功能概览</h2>
-            <p class="slide-subtitle">CORE FEATURES OVERVIEW</p>
+            <h2 class="slide-title">考试管理模块</h2>
+            <p class="slide-subtitle">EXAM MANAGEMENT MODULE</p>
           </div>
-          <div class="feature-grid">
-            <div class="feature-item">
-              <img src="image/02-首页-统计分析.png" alt="统计分析" />
-              <div class="feature-label">统计分析</div>
+          <div class="feature-detail">
+            <div class="feature-screenshot">
+              <img src="image/10-考试管理-考试列表.png" alt="考试列表" />
             </div>
-            <div class="feature-item">
-              <img src="image/07-课程管理-课程列表.png" alt="课程管理" />
-              <div class="feature-label">课程管理</div>
+            <div class="feature-list">
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>智能组卷</strong> - 按知识点、难度系数自动抽题组卷，支持固定卷/随机卷</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>考试安排</strong> - 设置考试开始/结束时间、答题时长、及格分数线、考试次数等</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>自动阅卷</strong> - 客观题自动评分，主观题支持人工在线评分，成绩自动汇总</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>成绩分析</strong> - 平均分、最高分、最低分、及格率、各分数段分布等统计</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span><strong>防作弊</strong> - 切屏警告、超时自动交卷、答案随机排序等防作弊机制</span>
+              </div>
             </div>
-            <div class="feature-item">
-              <img src="image/10-考试管理-考试列表.png" alt="考试管理" />
-              <div class="feature-label">考试管理</div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-divider" style="background: linear-gradient(135deg, #00cec9, #00b894)">
+            <h2><i class="fas fa-mobile-alt"></i> 微信小程序功能详解</h2>
+            <p>医护端 · 移动学习随时随地</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">小程序核心功能矩阵</h2>
+            <p class="slide-subtitle">MINI PROGRAM FEATURE MATRIX</p>
+          </div>
+          <div class="screenshot-gallery">
+            <div class="gallery-item">
+              <img src="image/小程序-首页.PNG" alt="首页" />
+              <div class="gallery-label">首页 · 课程考试入口</div>
             </div>
-            <div class="feature-item">
-              <img src="image/13-题库管理.png" alt="题库管理" />
-              <div class="feature-label">题库管理</div>
+            <div class="gallery-item">
+              <img src="image/小程序-课程详情.PNG" alt="课程学习" />
+              <div class="gallery-label">课程学习 · 视频播放</div>
             </div>
-            <div class="feature-item">
-              <img src="image/小程序-首页.PNG" alt="小程序" />
-              <div class="feature-label">小程序学习</div>
+            <div class="gallery-item">
+              <img src="image/小程序-我的考试.PNG" alt="在线考试" />
+              <div class="gallery-label">我的考试 · 在线答题</div>
             </div>
-            <div class="feature-item">
+            <div class="gallery-item">
+              <img src="image/小程序-成绩查询.PNG" alt="成绩查询" />
+              <div class="gallery-label">成绩查询 · 错题复习</div>
+            </div>
+            <div class="gallery-item">
               <img src="image/小程序-积分商城.PNG" alt="积分商城" />
-              <div class="feature-label">积分商城</div>
+              <div class="gallery-label">积分商城 · 礼品兑换</div>
+            </div>
+            <div class="gallery-item">
+              <img src="image/小程序-个人中心.PNG" alt="个人中心" />
+              <div class="gallery-label">个人中心 · 我的档案</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">双端功能对比</h2>
+            <p class="slide-subtitle">PC MANAGEMENT VS MINI PROGRAM</p>
+          </div>
+          <div class="platform-matrix">
+            <div class="platform-column">
+              <div class="platform-header management">
+                <i class="fas fa-desktop"></i>
+                <h3>PC管理端</h3>
+                <p>面向培训管理员 · 全方位管控</p>
+              </div>
+              <div class="platform-features">
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>创建和管理课程资源</span>
+                </div>
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>创建和管理考试安排</span>
+                </div>
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>题库建设与维护</span>
+                </div>
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>用户账号与权限管理</span>
+                </div>
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>学习进度监控追踪</span>
+                </div>
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>成绩统计与数据分析</span>
+                </div>
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>积分商城商品管理</span>
+                </div>
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>系统配置与日志审计</span>
+                </div>
+              </div>
+            </div>
+            <div class="platform-column">
+              <div class="platform-header mini">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>微信小程序</h3>
+                <p>面向医护人员 · 移动学习</p>
+              </div>
+              <div class="platform-features">
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>观看视频课程学习</span>
+                </div>
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>参加在线考试答题</span>
+                </div>
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>查询历史考试成绩</span>
+                </div>
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>错题本针对性复习</span>
+                </div>
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>查看积分与等级信息</span>
+                </div>
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>积分商城兑换礼品</span>
+                </div>
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>查看个人学习档案</span>
+                </div>
+                <div class="platform-feature-row">
+                  <i class="fas fa-check"></i>
+                  <span>接收培训通知消息</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-divider" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe)">
+            <h2><i class="fas fa-microchip"></i> 系统技术架构</h2>
+            <p>先进、稳定、安全的技术支撑</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">技术架构分层</h2>
+            <p class="slide-subtitle">TECHNICAL ARCHITECTURE LAYERS</p>
+          </div>
+          <div class="tech-arch">
+            <div class="arch-layer layer1">
+              <h4>前端展现层</h4>
+              <p>PC管理端 (React) + 微信小程序 + H5移动端</p>
+            </div>
+            <div class="arch-layer layer2">
+              <h4>应用服务层</h4>
+              <p>用户服务、课程服务、考试服务、积分服务、通知服务 (微服务架构)</p>
+            </div>
+            <div class="arch-layer layer3">
+              <h4>数据存储层</h4>
+              <p>MySQL 关系型数据库 + Redis 缓存 + 对象存储 OSS + CDN内容分发</p>
+            </div>
+            <div class="arch-layer layer4">
+              <h4>基础设施层</h4>
+              <p>Docker容器化部署 + Kubernetes编排 + 云服务器 + 安全防护体系</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header">
+            <h2 class="slide-title">系统核心特性</h2>
+            <p class="slide-subtitle">SYSTEM CORE FEATURES</p>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px">
+            <div style="padding: 20px; background: linear-gradient(135deg, #f5faff, #e8f4fd); border-radius: 12px; text-align: center">
+              <i class="fas fa-shield-alt" style="font-size: 32px; color: var(--primary); margin-bottom: 15px"></i>
+              <h4 style="color: var(--primary); margin-bottom: 10px">安全可靠</h4>
+              <p style="font-size: 13px; color: var(--text-light); line-height: 1.6">HTTPS加密传输、数据加密存储、等保三级合规、操作日志全审计</p>
+            </div>
+            <div style="padding: 20px; background: linear-gradient(135deg, #f5faff, #e8f4fd); border-radius: 12px; text-align: center">
+              <i class="fas fa-tachometer-alt" style="font-size: 32px; color: var(--primary); margin-bottom: 15px"></i>
+              <h4 style="color: var(--primary); margin-bottom: 10px">高性能</h4>
+              <p style="font-size: 13px; color: var(--text-light); line-height: 1.6">支持万人同时在线、CDN全球加速、Redis高速缓存、弹性扩缩容</p>
+            </div>
+            <div style="padding: 20px; background: linear-gradient(135deg, #f5faff, #e8f4fd); border-radius: 12px; text-align: center">
+              <i class="fas fa-plug" style="font-size: 32px; color: var(--primary); margin-bottom: 15px"></i>
+              <h4 style="color: var(--primary); margin-bottom: 10px">可扩展</h4>
+              <p style="font-size: 13px; color: var(--text-light); line-height: 1.6">模块化设计、标准API接口、支持HIS/EMR/OA等第三方系统对接</p>
             </div>
           </div>
         </section>
 
         <section>
           <div class="end-slide">
-            <h2 class="end-title">感谢聆听</h2>
-            <p class="end-subtitle">期待与您的合作</p>
-            <div class="end-contact"><i class="fas fa-handshake"></i>&nbsp;&nbsp; 数字化培训，降本又增效</div>
+            <h2 class="end-title">系统功能介绍完毕</h2>
+            <p class="end-subtitle">感谢您的耐心了解，期待与您合作</p>
+            <div class="end-qr"><i class="fas fa-headset"></i>&nbsp;&nbsp; 如需演示，请联系我们</div>
           </div>
         </section>
       </div>

@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>在线教育系统 - 演讲PPT</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; background: #1a1a2e; color: #fff; overflow: hidden; }
+
+  .ppt-container { width: 100vw; height: 100vh; position: relative; }
+
+  .slide {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0; left: 0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 60px;
+    animation: fadeIn 0.5s ease;
+  }
+  .slide.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 导航控制 */
+  .nav-controls {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    z-index: 100;
+    background: rgba(0,0,0,0.5);
+    padding: 10px 24px;
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+  }
+  .nav-btn {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.4); }
+  .slide-counter { color: rgba(255,255,255,0.7); font-size: 14px; min-width: 60px; text-align: center; }
+
+  /* 幻灯片编号 */
+  .slide-num {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    z-index: 100;
+  }
+
+  /* ===== 封面页 ===== */
+  .slide-cover {
+    background: linear-gradient(135deg, #0f3460 0%, #16213e 50%, #1a1a2e 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .slide-cover::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(52,152,219,0.15) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    border-radius: 50%;
+  }
+  .slide-cover::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(155,89,182,0.1) 0%, transparent 70%);
+    bottom: -50px; left: -50px;
+    border-radius: 50%;
+  }
+  .cover-content { text-align: center; z-index: 1; }
+  .cover-logo {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, #3498db, #9b59b6);
+    border-radius: 20px;
+    margin: 0 auto 24px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    box-shadow: 0 8px 32px rgba(52,152,219,0.4);
+  }
+  .cover-title { font-size: 52px; font-weight: 700; margin-bottom: 16px; background: linear-gradient(135deg, #fff, #a8d8ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .cover-subtitle { font-size: 20px; color: rgba(255,255,255,0.6); margin-bottom: 40px; }
+  .cover-tags { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .tag { background: rgba(52,152,219,0.2); border: 1px solid rgba(52,152,219,0.4); padding: 6px 16px; border-radius: 20px; font-size: 14px; color: #a8d8ea; }
+  .cover-date { margin-top: 40px; color: rgba(255,255,255,0.4); font-size: 14px; }
+
+  /* ===== 目录页 ===== */
+  .slide-agenda { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+  .slide-title { font-size: 36px; font-weight: 700; margin-bottom: 40px; text-align: center; }
+  .slide-title span { color: #3498db; }
+  .agenda-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; max-width: 900px; }
+  .agenda-item {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 24px 20px;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: default;
+  }
+  .agenda-item:hover { background: rgba(52,152,219,0.15); border-color: rgba(52,152,219,0.4); transform: translateY(-4px); }
+  .agenda-icon { font-size: 32px; margin-bottom: 12px; }
+  .agenda-num { font-size: 12px; color: #3498db; margin-bottom: 6px; font-weight: 600; letter-spacing: 2px; }
+  .agenda-name { font-size: 16px; font-weight: 600; }
+  .agenda-desc { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 6px; }
+
+  /* ===== 通用内容页 ===== */
+  .slide-content { background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%); align-items: flex-start; }
+  .section-badge { background: linear-gradient(135deg, #3498db, #2980b9); padding: 4px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 2px; margin-bottom: 16px; display: inline-block; }
+  .page-title { font-size: 32px; font-weight: 700; margin-bottom: 30px; }
+  .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+  .content-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; }
+
+  .feature-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .feature-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .feature-card ul { list-style: none; }
+  .feature-card ul li { font-size: 13px; color: rgba(255,255,255,0.7); padding: 4px 0; padding-left: 16px; position: relative; }
+  .feature-card ul li::before { content: '▸'; position: absolute; left: 0; color: #3498db; }
+
+  .highlight-card {
+    background: linear-gradient(135deg, rgba(52,152,219,0.15), rgba(52,152,219,0.05));
+    border: 1px solid rgba(52,152,219,0.3);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .highlight-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 10px; color: #a8d8ea; }
+
+  /* 截图展示 */
+  .screenshot-frame {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    flex-shrink: 0;
+  }
+  .screenshot-bar {
+    background: #f0f0f0;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 6px;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28c840; }
+  .screenshot-img { width: 100%; display: block; }
+
+  /* 两列布局 */
+  .two-col { display: flex; gap: 30px; width: 100%; align-items: flex-start; }
+  .col-left { flex: 1; }
+  .col-right { flex: 1; }
+
+  /* 流程步骤 */
+  .steps { display: flex; flex-direction: column; gap: 14px; }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 16px;
+    border-left: 3px solid #3498db;
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .step-content h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .step-content p { font-size: 12px; color: rgba(255,255,255,0.6); }
+
+  /* 统计数字 */
+  .stats-row { display: flex; gap: 20px; width: 100%; margin-bottom: 20px; }
+  .stat-card {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-num { font-size: 36px; font-weight: 700; background: linear-gradient(135deg, #3498db, #9b59b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .stat-label { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 6px; }
+
+  /* 角色权限表 */
+  .role-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .role-table th { background: rgba(52,152,219,0.3); padding: 10px 14px; text-align: left; font-weight: 600; }
+  .role-table td { padding: 9px 14px; border-bottom: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.8); }
+  .role-table tr:hover td { background: rgba(255,255,255,0.04); }
+  .badge-green { background: rgba(46,204,113,0.2); color: #2ecc71; padding: 2px 10px; border-radius: 10px; font-size: 11px; }
+  .badge-blue { background: rgba(52,152,219,0.2); color: #3498db; padding: 2px 10px; border-radius: 10px; font-size: 11px; }
+
+  /* 积分等级 */
+  .level-list { display: flex; flex-direction: column; gap: 10px; }
+  .level-item {
+    display: flex; align-items: center; gap: 14px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .level-badge { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+  .lv2 { background: linear-gradient(135deg, #95a5a6, #7f8c8d); }
+  .lv3 { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+  .lv4 { background: linear-gradient(135deg, #2980b9, #3498db); }
+  .lv5 { background: linear-gradient(135deg, #8e44ad, #9b59b6); }
+  .level-info { flex: 1; }
+  .level-name { font-size: 15px; font-weight: 600; }
+  .level-pts { font-size: 12px; color: rgba(255,255,255,0.5); }
+  .level-perks { display: flex; gap: 6px; flex-wrap: wrap; }
+  .perk { background: rgba(52,152,219,0.15); border: 1px solid rgba(52,152,219,0.3); padding: 2px 8px; border-radius: 8px; font-size: 11px; color: #a8d8ea; }
+
+  /* 结尾页 */
+  .slide-end {
+    background: linear-gradient(135deg, #0f3460 0%, #16213e 50%, #1a1a2e 100%);
+    text-align: center;
+  }
+  .end-icon { font-size: 64px; margin-bottom: 24px; }
+  .end-title { font-size: 42px; font-weight: 700; margin-bottom: 16px; background: linear-gradient(135deg, #fff, #a8d8ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .end-sub { font-size: 18px; color: rgba(255,255,255,0.6); margin-bottom: 40px; }
+  .end-features { display: flex; gap: 20px; justify-content: center; }
+  .end-feat { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px 24px; font-size: 14px; }
+
+  /* 进度条 */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3498db, #9b59b6);
+    transition: width 0.3s ease;
+    z-index: 200;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<div class="slide-num" id="slideNum">1 / 10</div>
+
+<div class="ppt-container">
+
+  <!-- 第1页：封面 -->
+  <div class="slide slide-cover active" id="slide-1">
+    <div class="cover-content">
+      <div class="cover-logo">🎓</div>
+      <div class="cover-title">在线教育系统</div>
+      <div class="cover-subtitle">高效、智能的一体化在线学习管理平台</div>
+      <div class="cover-tags">
+        <span class="tag">📚 课程管理</span>
+        <span class="tag">📝 考试系统</span>
+        <span class="tag">🏆 积分激励</span>
+        <span class="tag">📊 数据分析</span>
+        <span class="tag">🔐 权限管理</span>
+      </div>
+      <div class="cover-date">系统演示 · 2026年4月</div>
+    </div>
+  </div>
+
+  <!-- 第2页：目录 -->
+  <div class="slide slide-agenda" id="slide-2">
+    <div class="slide-title">演讲 <span>目录</span></div>
+    <div class="agenda-grid">
+      <div class="agenda-item">
+        <div class="agenda-icon">🎯</div>
+        <div class="agenda-num">01</div>
+        <div class="agenda-name">系统概述</div>
+        <div class="agenda-desc">系统定位与核心价值</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-icon">👥</div>
+        <div class="agenda-num">02</div>
+        <div class="agenda-name">用户管理</div>
+        <div class="agenda-desc">用户、积分、等级、角色</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-icon">📚</div>
+        <div class="agenda-num">03</div>
+        <div class="agenda-name">课程管理</div>
+        <div class="agenda-desc">课程创建与学习进度</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-icon">📝</div>
+        <div class="agenda-num">04</div>
+        <div class="agenda-name">考试管理</div>
+        <div class="agenda-desc">题库、考试、成绩评分</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-icon">🏪</div>
+        <div class="agenda-num">05</div>
+        <div class="agenda-name">积分商城</div>
+        <div class="agenda-desc">积分兑换激励体系</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-icon">⚙️</div>
+        <div class="agenda-num">06</div>
+        <div class="agenda-name">系统管理</div>
+        <div class="agenda-desc">通知、设置、维护、日志</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第3页：系统概述 -->
+  <div class="slide slide-content" id="slide-3">
+    <div class="section-badge">01 · 系统概述</div>
+    <div class="page-title">系统是什么？能做什么？</div>
+    <div class="two-col">
+      <div class="col-left">
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-num">8+</div>
+            <div class="stat-label">核心功能模块</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">22+</div>
+            <div class="stat-label">子功能页面</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">7</div>
+            <div class="stat-label">用户角色类型</div>
+          </div>
+        </div>
+        <div class="feature-card">
+          <h3>🎯 系统定位</h3>
+          <ul>
+            <li>面向企业/机构的在线教育管理平台</li>
+            <li>支持课程发布、在线学习、考试评测</li>
+            <li>内置积分激励与等级成长体系</li>
+            <li>提供完整的数据统计与分析功能</li>
+            <li>多角色权限管理，安全可控</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-right">
+        <div class="highlight-card" style="margin-bottom:16px;">
+          <h3>🌟 核心价值</h3>
+          <ul style="list-style:none;">
+            <li style="padding:6px 0; font-size:13px; color:rgba(255,255,255,0.8);">✅ 降低培训成本，提升学习效率</li>
+            <li style="padding:6px 0; font-size:13px; color:rgba(255,255,255,0.8);">✅ 统一管理学员学习进度与成绩</li>
+            <li style="padding:6px 0; font-size:13px; color:rgba(255,255,255,0.8);">✅ 积分体系激励学员持续学习</li>
+            <li style="padding:6px 0; font-size:13px; color:rgba(255,255,255,0.8);">✅ 数据驱动，实时掌握学习动态</li>
+            <li style="padding:6px 0; font-size:13px; color:rgba(255,255,255,0.8);">✅ 证书颁发，认证学习成果</li>
+          </ul>
+        </div>
+        <div class="feature-card">
+          <h3>📊 数据看板</h3>
+          <ul>
+            <li>用户总数、课程总数实时统计</li>
+            <li>最近7天学习趋势折线图</li>
+            <li>课程学习人数 TOP10 排行</li>
+            <li>学习完成率与考试通过率</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第4页：用户管理 -->
+  <div class="slide slide-content" id="slide-4">
+    <div class="section-badge">02 · 用户管理</div>
+    <div class="page-title">用户体系 · 四大管理维度</div>
+    <div class="two-col">
+      <div class="col-left">
+        <div class="feature-card" style="margin-bottom:16px;">
+          <h3>👤 用户列表</h3>
+          <ul>
+            <li>查看所有注册用户信息（用户名、昵称、邮箱、手机）</li>
+            <li>支持按手机号/昵称搜索过滤</li>
+            <li>显示用户状态与当前积分余额</li>
+            <li>管理员可新增用户账号</li>
+          </ul>
+        </div>
+        <div class="feature-card">
+          <h3>💰 积分管理</h3>
+          <ul>
+            <li>记录每笔积分变动明细（+/-）</li>
+            <li>积分来源：学习、考试、签到、兑换</li>
+            <li>管理员可手动调整用户积分</li>
+            <li>支持按用户ID/类型筛选查询</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-right">
+        <div class="level-list">
+          <div style="font-size:14px; font-weight:600; margin-bottom:8px; color:rgba(255,255,255,0.7);">🏆 等级体系</div>
+          <div class="level-item">
+            <div class="level-badge lv2">Lv2</div>
+            <div class="level-info">
+              <div class="level-name">高手</div>
+              <div class="level-pts">需要 100 积分</div>
+            </div>
+            <div class="level-perks"><span class="perk">免费试看5章</span><span class="perk">9折优惠</span></div>
+          </div>
+          <div class="level-item">
+            <div class="level-badge lv3">Lv3</div>
+            <div class="level-info">
+              <div class="level-name">专家</div>
+              <div class="level-pts">需要 500 积分</div>
+            </div>
+            <div class="level-perks"><span class="perk">免费试看10章</span><span class="perk">8折</span><span class="perk">专属答疑</span></div>
+          </div>
+          <div class="level-item">
+            <div class="level-badge lv4">Lv4</div>
+            <div class="level-info">
+              <div class="level-name">大师</div>
+              <div class="level-pts">需要 1000 积分</div>
+            </div>
+            <div class="level-perks"><span class="perk">7折优惠</span><span class="perk">项目指导</span></div>
+          </div>
+          <div class="level-item">
+            <div class="level-badge lv5">Lv5</div>
+            <div class="level-info">
+              <div class="level-name">大师（顶级）</div>
+              <div class="level-pts">需要 3000 积分</div>
+            </div>
+            <div class="level-perks"><span class="perk">全站免费</span><span class="perk">1对1辅导</span><span class="perk">就业推荐</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第5页：角色权限 -->
+  <div class="slide slide-content" id="slide-5">
+    <div class="section-badge">02 · 用户管理</div>
+    <div class="page-title">角色权限管理</div>
+    <div style="width:100%;">
+      <table class="role-table">
+        <thead>
+          <tr>
+            <th>角色编码</th>
+            <th>角色名称</th>
+            <th>职责说明</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>role-001</td><td>超级管理员</td><td>拥有系统所有权限，可管理所有模块</td><td><span class="badge-green">启用</span></td></tr>
+          <tr><td>role-002</td><td>管理员</td><td>拥有系统管理权限，日常运营管理</td><td><span class="badge-green">启用</span></td></tr>
+          <tr><td>role-003</td><td>课程管理员</td><td>负责课程内容的创建与维护</td><td><span class="badge-green">启用</span></td></tr>
+          <tr><td>role-004</td><td>考试管理员</td><td>负责考试安排和成绩管理</td><td><span class="badge-green">启用</span></td></tr>
+          <tr><td>role-005</td><td>运营人员</td><td>负责内容运营与活动策划</td><td><span class="badge-green">启用</span></td></tr>
+          <tr><td>role-006</td><td>客服人员</td><td>负责用户服务与问题处理</td><td><span class="badge-green">启用</span></td></tr>
+          <tr><td>role-007</td><td>普通用户</td><td>普通学员角色，参与学习与考试</td><td><span class="badge-green">启用</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:20px; display:flex; gap:16px;">
+        <div class="feature-card" style="flex:1;">
+          <h3>🔐 权限特点</h3>
+          <ul>
+            <li>细粒度角色权限控制</li>
+            <li>支持自定义角色创建</li>
+            <li>角色状态可随时启用/禁用</li>
+            <li>不同角色访问不同功能模块</li>
+          </ul>
+        </div>
+        <div class="feature-card" style="flex:1;">
+          <h3>🚀 使用方式</h3>
+          <ul>
+            <li>管理员在角色管理页新建角色</li>
+            <li>为角色配置对应权限范围</li>
+            <li>在用户列表中为用户分配角色</li>
+            <li>用户登录后按角色权限访问系统</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第6页：课程管理 -->
+  <div class="slide slide-content" id="slide-6">
+    <div class="section-badge">03 · 课程管理</div>
+    <div class="page-title">课程体系 · 全流程管理</div>
+    <div class="two-col">
+      <div class="col-left">
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h4>创建课程分类</h4>
+              <p>支持多级分类（医院管理、急诊急救、康复医学等），可添加子分类，灵活组织课程体系</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h4>发布课程</h4>
+              <p>填写课程标题、分类、讲师、价格，设置课程状态（启用/禁用），支持章节管理</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h4>管理章节内容</h4>
+              <p>为每门课程添加多个章节，上传视频/文档等学习资源，设置章节顺序</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <h4>追踪学习进度</h4>
+              <p>实时查看每位学员的学习进度、完成状态、最后观看时间，掌握学习动态</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-right">
+        <div class="highlight-card" style="margin-bottom:16px;">
+          <h3>📊 课程数据</h3>
+          <ul style="list-style:none;">
+            <li style="padding:5px 0; font-size:13px; color:rgba(255,255,255,0.8);">📂 支持多级课程分类管理</li>
+            <li style="padding:5px 0; font-size:13px; color:rgba(255,255,255,0.8);">🎬 课程包含视频章节内容</li>
+            <li style="padding:5px 0; font-size:13px; color:rgba(255,255,255,0.8);">👨‍🏫 支持多讲师课程发布</li>
+            <li style="padding:5px 0; font-size:13px; color:rgba(255,255,255,0.8);">💰 支持免费/付费课程设置</li>
+            <li style="padding:5px 0; font-size:13px; color:rgba(255,255,255,0.8);">📈 实时学习进度追踪（34条记录）</li>
+          </ul>
+        </div>
+        <div class="feature-card">
+          <h3>🏥 医疗专业分类示例</h3>
+          <ul>
+            <li>医院管理 / 急诊急救</li>
+            <li>康复医学 / 中医中药</li>
+            <li>公共卫生 / 药学</li>
+            <li>医学检验 / 医学影像</li>
+            <li>临床医学 / 护理学</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第7页：考试管理 -->
+  <div class="slide slide-content" id="slide-7">
+    <div class="section-badge">04 · 考试管理</div>
+    <div class="page-title">考试系统 · 完整评测闭环</div>
+    <div class="content-grid-3">
+      <div class="feature-card">
+        <h3>📚 题库管理</h3>
+        <ul>
+          <li>支持创建多个专业题库</li>
+          <li>题库按分类组织（护理/影像/药学等）</li>
+          <li>每个题库可管理多道题目</li>
+          <li>支持查看题库详情与编辑</li>
+          <li>共16个专业题库，320+道题目</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h3>📝 考试列表</h3>
+        <ul>
+          <li>关联课程章节的在线考试</li>
+          <li>记录考试得分与总分</li>
+          <li>显示是否通过与考试时长</li>
+          <li>支持进行中/已提交状态管理</li>
+          <li>共22场考试记录</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h3>📊 成绩管理</h3>
+        <ul>
+          <li>汇总所有用户考试成绩</li>
+          <li>按课程/章节/用户筛选查询</li>
+          <li>显示开始时间与提交时间</li>
+          <li>支持查看成绩详情</li>
+          <li>考试通过率：68.18%</li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:16px; width:100%;">
+      <div class="highlight-card">
+        <h3>✏️ 主观题评分（人工阅卷）</h3>
+        <div style="display:flex; gap:30px; margin-top:10px;">
+          <div style="text-align:center;">
+            <div style="font-size:28px; font-weight:700; color:#f39c12;">待评分</div>
+            <div style="font-size:12px; color:rgba(255,255,255,0.5);">等待阅卷</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:28px; font-weight:700; color:#3498db;">评分中</div>
+            <div style="font-size:12px; color:rgba(255,255,255,0.5);">正在批改</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:28px; font-weight:700; color:#2ecc71;">已评完</div>
+            <div style="font-size:12px; color:rgba(255,255,255,0.5);">批改完成</div>
+          </div>
+          <div style="flex:1; font-size:13px; color:rgba(255,255,255,0.7); padding-left:20px; border-left:1px solid rgba(255,255,255,0.1);">
+            系统支持主观题（问答题/论述题）的人工评分流程，管理员可查看待评分试卷列表，逐题打分，支持实时刷新评分队列。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第8页：积分商城 -->
+  <div class="slide slide-content" id="slide-8">
+    <div class="section-badge">05 · 积分商城</div>
+    <div class="page-title">积分激励体系 · 学习有奖励</div>
+    <div class="two-col">
+      <div class="col-left">
+        <div class="feature-card" style="margin-bottom:16px;">
+          <h3>🎯 积分获取方式</h3>
+          <ul>
+            <li>观看视频：每个视频 +10 积分</li>
+            <li>完成课程：完成整门课程 +100 积分</li>
+            <li>通过考试：考试通过 +50 积分</li>
+            <li>每日签到：每天签到 +5 积分</li>
+          </ul>
+        </div>
+        <div class="feature-card">
+          <h3>🛍️ 商品分类</h3>
+          <ul>
+            <li>学习用品（书包、钢笔、笔记本）</li>
+            <li>优惠券（10元/20元/50元优惠券）</li>
+            <li>生活用品（保温杯）</li>
+            <li>数码产品（充电宝、蓝牙耳机）</li>
+            <li>会员权益（课程代金券 5000积分）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-right">
+        <div style="font-size:14px; font-weight:600; margin-bottom:12px; color:rgba(255,255,255,0.7);">🏪 商品列表示例</div>
+        <div style="background:rgba(255,255,255,0.05); border-radius:12px; overflow:hidden;">
+          <table style="width:100%; border-collapse:collapse; font-size:13px;">
+            <thead>
+              <tr style="background:rgba(52,152,219,0.2);">
+                <th style="padding:10px 12px; text-align:left;">商品名称</th>
+                <th style="padding:10px 12px; text-align:center;">所需积分</th>
+                <th style="padding:10px 12px; text-align:center;">库存</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                <td style="padding:9px 12px;">蓝牙耳机</td>
+                <td style="padding:9px 12px; text-align:center; color:#f39c12;">3000</td>
+                <td style="padding:9px 12px; text-align:center; color:rgba(255,255,255,0.6);">10</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                <td style="padding:9px 12px;">课程代金券</td>
+                <td style="padding:9px 12px; text-align:center; color:#f39c12;">5000</td>
+                <td style="padding:9px 12px; text-align:center; color:rgba(255,255,255,0.6);">5</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                <td style="padding:9px 12px;">充电宝</td>
+                <td style="padding:9px 12px; text-align:center; color:#f39c12;">2000</td>
+                <td style="padding:9px 12px; text-align:center; color:rgba(255,255,255,0.6);">20</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                <td style="padding:9px 12px;">50元优惠券</td>
+                <td style="padding:9px 12px; text-align:center; color:#f39c12;">2500</td>
+                <td style="padding:9px 12px; text-align:center; color:rgba(255,255,255,0.6);">20</td>
+              </tr>
+              <tr>
+                <td style="padding:9px 12px;">笔记本</td>
+                <td style="padding:9px 12px; text-align:center; color:#f39c12;">300</td>
+                <td style="padding:9px 12px; text-align:center; color:rgba(255,255,255,0.6);">200</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:12px; font-size:12px; color:rgba(255,255,255,0.5);">共10件商品上架，覆盖多种奖励类型</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第9页：系统管理 -->
+  <div class="slide slide-content" id="slide-9">
+    <div class="section-badge">06 · 系统管理</div>
+    <div class="page-title">系统管理 · 六大运维功能</div>
+    <div class="content-grid">
+      <div class="feature-card">
+        <h3>🔔 通知管理</h3>
+        <ul>
+          <li><strong>通知模板：</strong>系统通知、课程通知、考试通知模板</li>
+          <li><strong>公告管理：</strong>发布系统公告，支持定时发布</li>
+          <li>模板复用，统一消息格式</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h3>🖼️ 轮播图管理</h3>
+        <ul>
+          <li>首页轮播图配置与排序</li>
+          <li>关联课程链接，引导学习</li>
+          <li>支持启用/禁用控制显示</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h3>🏅 证书模板</h3>
+        <ul>
+          <li>100+ 种证书模板（毕业证书、资格证书、培训证书等）</li>
+          <li>支持自定义证书样式</li>
+          <li>学员完成课程后自动颁发</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h3>⚙️ 系统设置</h3>
+        <ul>
+          <li>积分规则配置（观看/完成/考试/签到）</li>
+          <li>等级规则配置（自动升级开关）</li>
+          <li>免费试看章节数、考试重试次数</li>
+          <li>系统维护模式开关</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h3>🔧 系统维护</h3>
+        <ul>
+          <li>数据库完整备份（支持手动创建）</li>
+          <li>备份文件管理（恢复/删除）</li>
+          <li>清理缓存功能</li>
+          <li>已有6份完整备份记录</li>
+        </ul>
+      </div>
+      <div class="feature-card">
+        <h3>📋 操作日志</h3>
+        <ul>
+          <li>记录所有用户操作行为</li>
+          <li>显示操作人、类型、模块、IP地址</li>
+          <li>日志级别：info / warning / error</li>
+          <li>支持按类型/级别/时间范围查询</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第10页：结尾 -->
+  <div class="slide slide-end" id="slide-10">
+    <div class="end-icon">🎓</div>
+    <div class="end-title">感谢聆听</div>
+    <div class="end-sub">在线教育系统 · 助力数字化学习转型</div>
+    <div class="end-features">
+      <div class="end-feat">👥 完善的用户体系</div>
+      <div class="end-feat">📚 灵活的课程管理</div>
+      <div class="end-feat">📝 专业的考试系统</div>
+      <div class="end-feat">🏆 趣味积分激励</div>
+      <div class="end-feat">⚙️ 强大的系统管理</div>
+    </div>
+    <div style="margin-top:40px; color:rgba(255,255,255,0.3); font-size:13px;">如有问题，欢迎交流探讨</div>
+  </div>
+
+</div>
+
+<!-- 导航控制 -->
+<div class="nav-controls">
+  <button class="nav-btn" onclick="prevSlide()">◀ 上一页</button>
+  <span class="slide-counter" id="counter">1 / 10</span>
+  <button class="nav-btn" onclick="nextSlide()">下一页 ▶</button>
+</div>
+
+<script>
+  let current = 1;
+  const total = 10;
+
+  function showSlide(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.getElementById('slide-' + n).classList.add('active');
+    document.getElementById('counter').textContent = n + ' / ' + total;
+    document.getElementById('slideNum').textContent = n + ' / ' + total;
+    document.getElementById('progressBar').style.width = (n / total * 100) + '%';
+  }
+
+  function nextSlide() {
+    if (current < total) { current++; showSlide(current); }
+  }
+
+  function prevSlide() {
+    if (current > 1) { current--; showSlide(current); }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') nextSlide();
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevSlide();
+  });
+
+  showSlide(1);
+</script>
+</body>
+</html>

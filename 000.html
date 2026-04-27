@@ -43,6 +43,14 @@
         justify-content: center;
       }
 
+      .cover-slide-enhanced {
+        position: relative;
+        height: 650px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
       .cover-bg {
         position: absolute;
         top: 0;
@@ -56,8 +64,81 @@
         opacity: 0.08;
       }
 
-      .cover-content {
-        padding: 50px 60px;
+      .cover-content-wrapper {
+        display: flex;
+        align-items: stretch;
+        gap: 40px;
+        padding: 30px 40px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .cover-photo-container {
+        flex: 0 0 280px;
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+
+      .cover-photo-bg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 80%;
+        background: linear-gradient(135deg, rgba(39, 174, 96, 0.15), rgba(22, 160, 133, 0.1));
+        border-radius: 20px;
+      }
+
+      .cover-photo {
+        width: 260px;
+        height: auto;
+        max-height: 380px;
+        position: relative;
+        z-index: 1;
+        filter: drop-shadow(0 15px 30px rgba(39, 174, 96, 0.25));
+        object-fit: contain;
+        animation: photoFadeIn 8s ease-out forwards;
+        opacity: 0;
+      }
+
+      @keyframes photoFadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .cover-main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .cover-presenter {
+        font-size: 14px;
+        color: var(--text-light);
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid var(--light);
+      }
+
+      .cover-presenter-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+
+      .cover-presenter-row i {
+        width: 24px;
+        color: var(--primary);
+        margin-right: 10px;
       }
 
       .cover-title {
@@ -356,6 +437,61 @@
         color: var(--primary);
       }
 
+      /* 烟花动画样式 */
+      .fireworks-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .firework {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        animation: fireworkExplode 1.5s ease-out forwards;
+      }
+
+      .firework-particle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        animation: particleFly 1.2s ease-out forwards;
+      }
+
+      @keyframes fireworkExplode {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(0);
+          opacity: 0;
+        }
+      }
+
+      @keyframes particleFly {
+        0% {
+          transform: translate(0, 0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(var(--tx), var(--ty)) scale(0);
+          opacity: 0;
+        }
+      }
+
+      .end-slide {
+        position: relative;
+        z-index: 1;
+      }
+
       .reveal .progress {
         color: var(--accent);
       }
@@ -439,15 +575,37 @@
     <div class="reveal">
       <div class="slides">
         <section>
-          <div class="cover-slide">
+          <div class="cover-slide-enhanced">
             <div class="cover-bg"></div>
-            <div class="cover-content">
-              <div class="cover-title">药学药品管理信息化规划的运营</div>
-              <div class="cover-subtitle">技巧与经验分享</div>
-              <div class="cover-event">
-                <i class="fas fa-concierge-bell"></i>&nbsp;&nbsp; 药学信息化交流会 · 药学药品管理信息化建设专题<br />
-                <i class="fas fa-map-marker-alt" style="margin-top: 8px;"></i>&nbsp;&nbsp; 会议地点：东湖园区门诊8楼会议室<br />
-                <i class="fas fa-user" style="margin-top: 8px;"></i>&nbsp;&nbsp; 分享人：余金锋
+            <div class="cover-content-wrapper">
+              <div class="cover-main-content">
+                <div class="cover-title">药学药品管理信息化规划的运营</div>
+                <div class="cover-subtitle">技巧与经验分享</div>
+                <div class="cover-event">
+                  <i class="fas fa-concierge-bell"></i>&nbsp;&nbsp; 药学信息化交流会 · 药学药品管理信息化建设专题<br />
+                  <i class="fas fa-map-marker-alt" style="margin-top: 8px;"></i>&nbsp;&nbsp; 会议地点：东湖园区门诊8楼会议室
+                </div>
+                <div class="cover-presenter">
+                  <div class="cover-presenter-row">
+                    <i class="fas fa-user"></i>
+                    <span><strong>余金锋</strong> &nbsp;&nbsp;系统架构师 / 高级工程师</span>
+                  </div>
+                  <div class="cover-presenter-row">
+                    <i class="fas fa-code"></i>
+                    <span>信息化专家 / 全栈技术顾问</span>
+                  </div>
+                  <div class="cover-presenter-row">
+                    <i class="fas fa-building"></i>
+                    <span>信息科 · 技术研发中心</span>
+                  </div>
+                  <div class="cover-presenter-row">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>13392819007</span>
+                  </div>
+                </div>
+              </div>
+              <div class="cover-photo-container">
+                <img src="image/yujinfeng.PNG" alt="余金锋" class="cover-photo" />
               </div>
             </div>
           </div>
@@ -923,8 +1081,9 @@
           </div>
         </section>
 
-        <section>
+        <section id="end-slide-section">
           <div class="end-slide">
+            <div class="fireworks-container" id="fireworksContainer"></div>
             <h2 class="end-title">感谢聆听</h2>
             <p class="end-subtitle">欢迎交流探讨，共同推进药学信息化建设</p>
             <div class="end-contact">
@@ -951,6 +1110,86 @@
         height: 700,
         margin: 0.08,
       });
+
+      // 烟花动画
+      let fireworksInterval = null;
+
+      function createFirework(x, y, container) {
+        const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#95e1d3', '#f38181', '#aa96da', '#fcbad3', '#a8d8ea'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+
+        const firework = document.createElement('div');
+        firework.className = 'firework';
+        firework.style.left = x + 'px';
+        firework.style.top = y + 'px';
+        firework.style.backgroundColor = color;
+        container.appendChild(firework);
+
+        // 创建粒子
+        const particleCount = 12;
+        for (let i = 0; i < particleCount; i++) {
+          const angle = (i / particleCount) * Math.PI * 2;
+          const distance = 100 + Math.random() * 80;
+          const tx = Math.cos(angle) * distance;
+          const ty = Math.sin(angle) * distance;
+
+          const particle = document.createElement('div');
+          particle.className = 'firework-particle';
+          particle.style.left = x + 'px';
+          particle.style.top = y + 'px';
+          particle.style.backgroundColor = color;
+          particle.style.setProperty('--tx', tx + 'px');
+          particle.style.setProperty('--ty', ty + 'px');
+          particle.style.animationDelay = (Math.random() * 0.1) + 's';
+          container.appendChild(particle);
+
+          // 清理粒子
+          setTimeout(() => particle.remove(), 1500);
+        }
+
+        // 清理烟花
+        setTimeout(() => firework.remove(), 1500);
+      }
+
+      function launchFireworks() {
+        const container = document.getElementById('fireworksContainer');
+        if (!container) return;
+
+        const rect = container.getBoundingClientRect();
+
+        // 每隔一段时间发射烟花
+        fireworksInterval = setInterval(() => {
+          const x = Math.random() * rect.width;
+          const y = Math.random() * (rect.height * 0.6); // 只在上半部分
+          createFirework(x, y, container);
+        }, 400);
+      }
+
+      function stopFireworks() {
+        if (fireworksInterval) {
+          clearInterval(fireworksInterval);
+          fireworksInterval = null;
+        }
+        // 清除所有烟花元素
+        const container = document.getElementById('fireworksContainer');
+        if (container) {
+          container.innerHTML = '';
+        }
+      }
+
+      // 监听幻灯片变化，到达最后一页时启动烟花
+      Reveal.on('slidechanged', (event) => {
+        if (event.indexh === Reveal.getTotalSlides() - 1) {
+          launchFireworks();
+        } else {
+          stopFireworks();
+        }
+      });
+
+      // 初始检查是否在最后一页
+      if (Reveal.getState().indexh === Reveal.getTotalSlides() - 1) {
+        launchFireworks();
+      }
     </script>
   </body>
 </html>

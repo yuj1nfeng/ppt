@@ -1,27 +1,609 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>云求索 - 医院智能培训管理平台</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
-<link rel="stylesheet" href="style/main.css?v=7">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>在线PPT平台 - 文档导航</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      :root {
+        --primary: #1a365d;
+        --secondary: #2c5282;
+        --accent: #ed8936;
+        --gold: #d69e2e;
+        --light: #e2e8f0;
+        --text: #2d3748;
+        --text-light: #718096;
+      }
 
-  <!-- 主内容区：动态加载页面 -->
-  <div id="slide-container" class="slide active"></div>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-  <!-- 导航控制 -->
-  <div class="nav-controls">
-    <button class="nav-btn" id="prevBtn">←</button>
-    <span class="nav-counter" id="navCounter">01 / 21</span>
-    <button class="nav-btn" id="nextBtn">→</button>
-  </div>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(135deg, #f7fafc 0%, #e2e8f0 100%);
+        min-height: 100vh;
+        color: var(--text);
+      }
 
-  <!-- 进度条 -->
-  <div class="progress-bar" id="progressBar" style="width: 5.88%"></div>
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 60px 20px;
+      }
 
-<script src="script/main.js?v=3"></script>
-</body>
+      /* 头部区域 */
+      .header {
+        text-align: center;
+        margin-bottom: 60px;
+        position: relative;
+      }
+
+      .header::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(26, 54, 93, 0.05) 0%, transparent 70%);
+        border-radius: 50%;
+        z-index: 0;
+      }
+
+      .header-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .header-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 30px rgba(26, 54, 93, 0.3);
+      }
+
+      .header-icon i {
+        font-size: 36px;
+        color: white;
+      }
+
+      .header-title {
+        font-size: 48px;
+        font-weight: 800;
+        color: var(--primary);
+        margin-bottom: 15px;
+        letter-spacing: -1px;
+      }
+
+      .header-subtitle {
+        font-size: 20px;
+        color: var(--text-light);
+        font-weight: 400;
+      }
+
+      .header-divider {
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--gold), var(--accent));
+        margin: 30px auto 0;
+        border-radius: 2px;
+      }
+
+      /* PPT 卡片网格 */
+      .ppt-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 30px;
+        margin-bottom: 50px;
+      }
+
+      .ppt-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px 30px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .ppt-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
+      }
+
+      .ppt-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(26, 54, 93, 0.15);
+      }
+
+      .ppt-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      .ppt-card-number {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(26, 54, 93, 0.2);
+      }
+
+      .ppt-card-number span {
+        font-size: 28px;
+        font-weight: 800;
+        color: white;
+      }
+
+      .ppt-card-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 12px;
+        line-height: 1.3;
+      }
+
+      .ppt-card-desc {
+        font-size: 15px;
+        color: var(--text-light);
+        line-height: 1.6;
+        margin-bottom: 25px;
+      }
+
+      .ppt-card-action {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--accent);
+        font-weight: 600;
+        font-size: 15px;
+      }
+
+      .ppt-card-action i {
+        transition: transform 0.3s ease;
+      }
+
+      .ppt-card:hover .ppt-card-action i {
+        transform: translateX(5px);
+      }
+
+      .ppt-card-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, var(--gold), var(--accent));
+        color: white;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 6px 14px;
+        border-radius: 20px;
+      }
+
+      /* 快速操作区 */
+      .quick-actions {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .quick-actions-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .quick-actions-title i {
+        color: var(--accent);
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .action-btn {
+        flex: 1;
+        min-width: 180px;
+        padding: 18px 25px;
+        background: linear-gradient(135deg, #f7fafc, #edf2f7);
+        border: 2px solid var(--light);
+        border-radius: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--primary);
+        transition: all 0.3s ease;
+        text-decoration: none;
+      }
+
+      .action-btn:hover {
+        border-color: var(--primary);
+        background: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(26, 54, 93, 0.1);
+      }
+
+      .action-btn i {
+        font-size: 20px;
+      }
+
+      .action-btn.primary {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-color: transparent;
+        color: white;
+      }
+
+      .action-btn.primary:hover {
+        box-shadow: 0 8px 25px rgba(26, 54, 93, 0.3);
+      }
+
+      /* 底部信息 */
+      .footer {
+        text-align: center;
+        margin-top: 60px;
+        padding-top: 40px;
+        border-top: 1px solid var(--light);
+      }
+
+      .footer-text {
+        font-size: 14px;
+        color: var(--text-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .footer-text i {
+        color: var(--accent);
+      }
+
+      /* 响应式 */
+      @media (max-width: 768px) {
+        .container {
+          padding: 40px 20px;
+        }
+
+        .header-title {
+          font-size: 36px;
+        }
+
+        .header-subtitle {
+          font-size: 18px;
+        }
+
+        .ppt-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .action-buttons {
+          flex-direction: column;
+        }
+
+        .action-btn {
+          min-width: 100%;
+        }
+      }
+
+      /* 动画 */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .ppt-card {
+        animation: fadeInUp 0.6s ease backwards;
+      }
+
+      .ppt-card:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .ppt-card:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .ppt-card:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .ppt-card:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+      .ppt-card:nth-child(5) {
+        animation-delay: 0.5s;
+      }
+      .ppt-card:nth-child(6) {
+        animation-delay: 0.6s;
+      }
+      .ppt-card:nth-child(7) {
+        animation-delay: 0.7s;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 头部 -->
+      <header class="header">
+        <div class="header-content">
+          <div class="header-icon">
+            <i class="fas fa-presentation"></i>
+          </div>
+          <h1 class="header-title">在线PPT平台</h1>
+          <div class="header-divider"></div>
+        </div>
+      </header>
+
+      <!-- PPT 卡片网格 -->
+      <main class="ppt-grid" id="pptGrid">
+        <div class="ppt-card" style="text-align: center; min-width: 100%">
+          <div class="ppt-card-number" style="margin: 0 auto 20px">
+            <i class="fas fa-spinner fa-spin" style="color: white; font-size: 24px"></i>
+          </div>
+          <h3 class="ppt-card-title">正在加载...</h3>
+          <p class="ppt-card-desc">正在扫描目录中的PPT文件</p>
+        </div>
+      </main>
+
+      <!-- 快速操作区 -->
+      <section class="quick-actions">
+        <h2 class="quick-actions-title">
+          <i class="fas fa-bolt"></i>
+          快速操作
+        </h2>
+        <div class="action-buttons">
+          <a href="ppt.html" class="action-btn primary">
+            <i class="fas fa-play"></i>
+            从主文档开始
+          </a>
+          <button class="action-btn" onclick="window.location.reload()">
+            <i class="fas fa-sync-alt"></i>
+            刷新页面
+          </button>
+          <button class="action-btn" onclick="window.open('ppt.html', '_blank')">
+            <i class="fas fa-external-link-alt"></i>
+            新窗口打开
+          </button>
+        </div>
+      </section>
+
+      <!-- 底部 -->
+      <footer class="footer">
+        <p class="footer-text">
+          <i class="fas fa-heart"></i>
+          在线PPT平台 · 简洁高效的演示文档管理
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      let availablePpts = [];
+
+      // 检测文件是否存在
+      async function checkFileExists(filename) {
+        try {
+          const response = await fetch(filename, { method: 'HEAD' });
+          return response.ok;
+        } catch {
+          return false;
+        }
+      }
+
+      // 获取PPT的标题（从HTML文件中）
+      async function getPptTitle(filename) {
+        try {
+          const response = await fetch(filename);
+          const text = await response.text();
+          const titleMatch = text.match(/<title>([^<]+)<\/title>/);
+          if (titleMatch && titleMatch[1]) {
+            return titleMatch[1].replace('医院培训平台 - ', '');
+          }
+        } catch {}
+        return null;
+      }
+
+      // 从文件中获取title和描述
+      async function getPptMeta(filename, index) {
+        try {
+          const response = await fetch(filename);
+          const text = await response.text();
+
+          // 提取title
+          let title = filename.replace('.html', '');
+          const titleMatch = text.match(/<title>([^<]+)<\/title>/);
+          if (titleMatch && titleMatch[1]) {
+            title = titleMatch[1].replace('医院培训平台 - ', '').trim();
+          }
+
+          // 只从 meta description 提取desc，没有则显示"无"
+          let desc = '无';
+          const descMatch = text.match(/<meta[^>]+name=["']description["'][^>]+content=["']([^"']+)["']/i);
+          if (descMatch && descMatch[1]) {
+            desc = descMatch[1];
+          }
+
+          return { title, desc, isMain: index === 0 };
+        } catch {
+          return { title: filename.replace('.html', ''), desc: '无', isMain: false };
+        }
+      }
+
+      // 生成PPT卡片HTML
+      function createPptCard(filename, index, meta = null) {
+        const title = meta ? meta.title : `正在加载...`;
+        const desc = meta ? meta.desc : '';
+        const isMain = meta ? meta.isMain : index === 0;
+
+        return `
+                <a href="${filename}" class="ppt-card" data-index="${index}" data-filename="${filename}">
+                    ${isMain ? '<span class="ppt-card-badge">主文档</span>' : ''}
+                    <div class="ppt-card-number">
+                        <span>${String(index).padStart(2, '0')}</span>
+                    </div>
+                    <h3 class="ppt-card-title">${title}</h3>
+                    <p class="ppt-card-desc">${desc}</p>
+                    <div class="ppt-card-action">
+                        <span>开始演示</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </a>
+            `;
+      }
+
+      // 加载所有PPT文件
+      async function loadPpts() {
+        const grid = document.getElementById('pptGrid');
+        const pptFiles = [];
+
+        // 扫描 000.html 到 999.html
+        for (let i = 0; i <= 999; i++) {
+          pptFiles.push(`${String(i).padStart(3, '0')}.html`);
+        }
+
+        // 同时兼容旧文件名（ppt开头的和其他html）
+        for (let i = 0; i <= 99; i++) {
+          pptFiles.push(i === 0 ? 'ppt.html' : `ppt${i}.html`);
+        }
+
+        // 其他已知的html文件
+        ['conference.html', 'management.html', 'medical_staff.html', 'system_intro.html', 'user_manual.html'].forEach((f) => pptFiles.push(f));
+
+        const exists = [];
+        const batchSize = 20;
+
+        // 批量检测文件是否存在，排除index.html
+        for (let i = 0; i < pptFiles.length; i += batchSize) {
+          const batch = pptFiles.slice(i, i + batchSize);
+          const results = await Promise.all(
+            batch.map(async (file) => {
+              if (file === 'index.html') return null;
+              const exists = await checkFileExists(file);
+              return exists ? file : null;
+            }),
+          );
+          exists.push(...results.filter(Boolean));
+        }
+
+        // 排序：优先 000-999.html，然后是其他文件
+        exists.sort((a, b) => {
+          const aIsNumeric = /^\d{3}\.html$/.test(a);
+          const bIsNumeric = /^\d{3}\.html$/.test(b);
+
+          if (aIsNumeric && bIsNumeric) {
+            return parseInt(a) - parseInt(b);
+          }
+          if (aIsNumeric) return -1;
+          if (bIsNumeric) return 1;
+
+          // ppt*.html 排序
+          const aIsPpt = a.startsWith('ppt');
+          const bIsPpt = b.startsWith('ppt');
+
+          if (aIsPpt && bIsPpt) {
+            const aNum = a === 'ppt.html' ? 0 : parseInt(a.replace('ppt', '').replace('.html', '')) || 999;
+            const bNum = b === 'ppt.html' ? 0 : parseInt(b.replace('ppt', '').replace('.html', '')) || 999;
+            return aNum - bNum;
+          }
+          if (aIsPpt) return -1;
+          if (bIsPpt) return 1;
+
+          // 其他文件按名称排序
+          return a.localeCompare(b);
+        });
+
+        availablePpts = exists;
+
+        // 更新快速操作按钮
+        const startBtn = document.querySelector('.action-btn.primary');
+        if (startBtn && exists.length > 0) {
+          startBtn.href = exists[0];
+        }
+
+        // 渲染卡片（先显示加载状态）
+        if (exists.length === 0) {
+          grid.innerHTML = `
+                    <div class="ppt-card" style="text-align: center; min-width: 100%;">
+                        <div class="ppt-card-number" style="margin: 0 auto 20px;">
+                            <i class="fas fa-folder-open" style="color: white; font-size: 24px;"></i>
+                        </div>
+                        <h3 class="ppt-card-title">未找到PPT文件</h3>
+                        <p class="ppt-card-desc">当前目录下没有发现演示文档</p>
+                    </div>
+                `;
+        } else {
+          grid.innerHTML = exists.map((file, idx) => createPptCard(file, idx + 1)).join('');
+
+          // 异步加载每个文件的元数据并更新卡片
+          exists.forEach(async (file, idx) => {
+            const meta = await getPptMeta(file, idx);
+            const card = grid.querySelector(`[data-filename="${file}"]`);
+            if (card) {
+              card.querySelector('.ppt-card-title').textContent = meta.title;
+              card.querySelector('.ppt-card-desc').textContent = meta.desc;
+              if (meta.isMain && !card.querySelector('.ppt-card-badge')) {
+                const badge = document.createElement('span');
+                badge.className = 'ppt-card-badge';
+                badge.textContent = '主文档';
+                card.insertBefore(badge, card.firstChild);
+              }
+            }
+          });
+        }
+      }
+
+      // 键盘快捷键支持
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          if (availablePpts.length > 0) {
+            window.location.href = availablePpts[0];
+          }
+        }
+        const num = parseInt(e.key);
+        if (num >= 1 && num <= availablePpts.length) {
+          window.location.href = availablePpts[num - 1];
+        }
+      });
+
+      // 页面加载时执行
+      document.addEventListener('DOMContentLoaded', loadPpts);
+    </script>
+  </body>
 </html>

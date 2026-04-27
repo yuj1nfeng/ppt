@@ -1000,6 +1000,61 @@
         color: var(--primary);
       }
 
+      /* 烟花动画样式 */
+      .fireworks-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .firework {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        animation: fireworkExplode 1.5s ease-out forwards;
+      }
+
+      .firework-particle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        animation: particleFly 1.2s ease-out forwards;
+      }
+
+      @keyframes fireworkExplode {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(0);
+          opacity: 0;
+        }
+      }
+
+      @keyframes particleFly {
+        0% {
+          transform: translate(0, 0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(var(--tx), var(--ty)) scale(0);
+          opacity: 0;
+        }
+      }
+
+      .end-slide {
+        position: relative;
+        z-index: 1;
+      }
+
       .reveal .progress {
         color: var(--accent);
       }
@@ -1073,6 +1128,19 @@
         z-index: 1;
         filter: drop-shadow(0 15px 30px rgba(43, 108, 176, 0.25));
         object-fit: contain;
+        animation: photoFadeIn 8s ease-out forwards;
+        opacity: 0;
+      }
+
+      @keyframes photoFadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       .cover-main-content {
@@ -1917,8 +1985,9 @@
         <!-- ============================================ -->
         <!-- 结束页 -->
         <!-- ============================================ -->
-        <section>
+        <section id="end-slide-section">
           <div class="end-slide">
+            <div class="fireworks-container" id="fireworksContainer"></div>
             <h2 class="end-title">感谢观看</h2>
             <p class="end-subtitle">内部培训平台 · 数字化培训，降本又增效</p>
             <div class="end-btn"><i class="fas fa-headset"></i>&nbsp;&nbsp; 如需演示，请联系我们</div>
@@ -1943,6 +2012,86 @@
         height: 700,
         margin: 0.08,
       });
+
+      // 烟花动画
+      let fireworksInterval = null;
+
+      function createFirework(x, y, container) {
+        const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#95e1d3', '#f38181', '#aa96da', '#fcbad3', '#a8d8ea'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+
+        const firework = document.createElement('div');
+        firework.className = 'firework';
+        firework.style.left = x + 'px';
+        firework.style.top = y + 'px';
+        firework.style.backgroundColor = color;
+        container.appendChild(firework);
+
+        // 创建粒子
+        const particleCount = 12;
+        for (let i = 0; i < particleCount; i++) {
+          const angle = (i / particleCount) * Math.PI * 2;
+          const distance = 100 + Math.random() * 80;
+          const tx = Math.cos(angle) * distance;
+          const ty = Math.sin(angle) * distance;
+
+          const particle = document.createElement('div');
+          particle.className = 'firework-particle';
+          particle.style.left = x + 'px';
+          particle.style.top = y + 'px';
+          particle.style.backgroundColor = color;
+          particle.style.setProperty('--tx', tx + 'px');
+          particle.style.setProperty('--ty', ty + 'px');
+          particle.style.animationDelay = (Math.random() * 0.1) + 's';
+          container.appendChild(particle);
+
+          // 清理粒子
+          setTimeout(() => particle.remove(), 1500);
+        }
+
+        // 清理烟花
+        setTimeout(() => firework.remove(), 1500);
+      }
+
+      function launchFireworks() {
+        const container = document.getElementById('fireworksContainer');
+        if (!container) return;
+
+        const rect = container.getBoundingClientRect();
+
+        // 每隔一段时间发射烟花
+        fireworksInterval = setInterval(() => {
+          const x = Math.random() * rect.width;
+          const y = Math.random() * (rect.height * 0.6); // 只在上半部分
+          createFirework(x, y, container);
+        }, 400);
+      }
+
+      function stopFireworks() {
+        if (fireworksInterval) {
+          clearInterval(fireworksInterval);
+          fireworksInterval = null;
+        }
+        // 清除所有烟花元素
+        const container = document.getElementById('fireworksContainer');
+        if (container) {
+          container.innerHTML = '';
+        }
+      }
+
+      // 监听幻灯片变化，到达最后一页时启动烟花
+      Reveal.on('slidechanged', (event) => {
+        if (event.indexh === Reveal.getTotalSlides() - 1) {
+          launchFireworks();
+        } else {
+          stopFireworks();
+        }
+      });
+
+      // 初始检查是否在最后一页
+      if (Reveal.getState().indexh === Reveal.getTotalSlides() - 1) {
+        launchFireworks();
+      }
     </script>
   </body>
 </html>

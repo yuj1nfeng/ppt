@@ -499,14 +499,6 @@
           pptFiles.push(`${String(i).padStart(3, '0')}.html`);
         }
 
-        // 同时兼容旧文件名（ppt开头的和其他html）
-        for (let i = 0; i <= 99; i++) {
-          pptFiles.push(i === 0 ? 'ppt.html' : `ppt${i}.html`);
-        }
-
-        // 其他已知的html文件
-        ['conference.html', 'management.html', 'medical_staff.html', 'system_intro.html', 'user_manual.html'].forEach((f) => pptFiles.push(f));
-
         const exists = [];
         const batchSize = 20;
 

@@ -1028,6 +1028,85 @@
         width: 100%;
         display: block;
       }
+
+      /* 丰富封面样式 */
+      .cover-slide-enhanced {
+        position: relative;
+        height: 650px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .cover-content-wrapper {
+        display: flex;
+        align-items: stretch;
+        gap: 40px;
+        padding: 30px 40px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .cover-photo-container {
+        flex: 0 0 280px;
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+
+      .cover-photo-bg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 80%;
+        background: linear-gradient(135deg, rgba(43, 108, 176, 0.15), rgba(66, 153, 225, 0.1));
+        border-radius: 20px;
+      }
+
+      .cover-photo {
+        width: 260px;
+        height: auto;
+        max-height: 380px;
+        position: relative;
+        z-index: 1;
+        filter: drop-shadow(0 15px 30px rgba(43, 108, 176, 0.25));
+        object-fit: contain;
+      }
+
+      .cover-main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .cover-presenter {
+        font-size: 14px;
+        color: var(--text-light);
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid var(--light);
+      }
+
+      .cover-presenter-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+
+      .cover-presenter-row i {
+        width: 24px;
+        color: var(--primary);
+        margin-right: 10px;
+      }
+
+      .cover-date {
+        font-size: 13px;
+        color: var(--text-light);
+        margin-top: 15px;
+      }
     </style>
   </head>
   <body>
@@ -1037,15 +1116,39 @@
         <!-- 总封面 -->
         <!-- ============================================ -->
         <section>
-          <div class="cover-slide">
+          <div class="cover-slide-enhanced">
             <div class="cover-bg"></div>
-            <div class="cover-content">
-              <div class="cover-title">内部培训平台</div>
-              <div class="cover-subtitle">完整整合版</div>
-              <div class="cover-tagline">
-                <i class="fas fa-check-circle"></i>&nbsp;&nbsp;系统功能<br />
-                <i class="fas fa-check-circle"></i>&nbsp;&nbsp;核心价值<br />
-                <i class="fas fa-check-circle"></i>&nbsp;&nbsp;培训指南
+            <div class="cover-content-wrapper">
+              <div class="cover-photo-container">
+                <img src="image/yujinfeng.PNG" alt="余金锋" class="cover-photo" />
+              </div>
+              <div class="cover-main-content">
+                <div class="cover-title">内部培训平台</div>
+                <div class="cover-subtitle">数字化培训解决方案</div>
+                <div class="cover-tagline">
+                  <i class="fas fa-check-circle"></i>&nbsp;&nbsp;功能介绍<br />
+                  <i class="fas fa-check-circle"></i>&nbsp;&nbsp;核心价值<br />
+                  <i class="fas fa-check-circle"></i>&nbsp;&nbsp;培训指南
+                </div>
+                <div class="cover-presenter">
+                  <div class="cover-presenter-row">
+                    <i class="fas fa-user"></i>
+                    <span><strong>余金锋</strong> &nbsp;&nbsp;系统架构师 / 高级工程师</span>
+                  </div>
+                  <div class="cover-presenter-row">
+                    <i class="fas fa-code"></i>
+                    <span>信息化专家 / 全栈技术顾问</span>
+                  </div>
+                  <div class="cover-presenter-row">
+                    <i class="fas fa-building"></i>
+                    <span>信息科 · 技术研发中心</span>
+                  </div>
+                  <div class="cover-presenter-row">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>13392819007</span>
+                  </div>
+                </div>
+                <div class="cover-date"><i class="fas fa-calendar-alt"></i>&nbsp;&nbsp;2026年4月</div>
               </div>
             </div>
           </div>
@@ -1057,7 +1160,7 @@
         <section>
           <div class="section-divider">
             <h2><i class="fas fa-cubes"></i> 第一部分</h2>
-            <p>系统功能全面介绍</p>
+            <p>功能介绍</p>
           </div>
         </section>
 
@@ -1374,7 +1477,7 @@
         <section>
           <div class="section-divider">
             <h2><i class="fas fa-gem"></i> 第二部分</h2>
-            <p>核心价值汇报</p>
+            <p>核心价值</p>
           </div>
         </section>
 
@@ -1533,7 +1636,7 @@
         <section>
           <div class="section-divider">
             <h2><i class="fas fa-graduation-cap"></i> 第三部分</h2>
-            <p>人员培训指南</p>
+            <p>培训指南</p>
           </div>
         </section>
 
